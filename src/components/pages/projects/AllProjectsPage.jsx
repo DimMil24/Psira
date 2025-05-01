@@ -1,0 +1,87 @@
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  Grid2,
+  Paper,
+  Stack,
+  Typography,
+} from "@mui/material";
+import { useContext, useEffect, useState } from "react";
+import { myFetchGet } from "../../../utils/fetchUtils";
+import { AuthContext } from "../../../auth/AuthProvider";
+import { Link } from "react-router";
+import { stringAvatar } from "../../../utils/avatarUtils";
+import { getColorPriority } from "../../../utils/chipUtils";
+
+const AllProjectsPage = () => {
+  const [data, setData] = useState([]);
+  const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await myFetchGet("projects", token);
+      setData(response);
+    };
+    getData();
+  }, [token]);
+
+  return (
+    <Grid2 container>
+      {data.map((p) => (
+        <Grid2 key={p.id} size={4} sx={{ padding: 1 }}>
+          <Paper elevation={2} sx={{ height: 230 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                height: 230,
+                textAlign: "left",
+              }}
+            >
+              <Typography sx={{ p: 1 }} variant="body1">
+                {p.projectName}
+              </Typography>
+              <Typography sx={{ ml: 1 }} variant="body2">
+                {p.startDate} - {p.deadline}
+              </Typography>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  alignContent: "center",
+                  alignSelf: "center",
+                }}
+              >
+                <Stack direction="row" spacing={-2}>
+                  {p.users.map((u) => (
+                    <Avatar key={u.fullName} {...stringAvatar(u.fullName)} />
+                  ))}
+                </Stack>
+              </Box>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  mb: 2,
+                  p: 1,
+                }}
+              >
+                <Chip
+                  label={"Priority: " + p.priority}
+                  color={getColorPriority(p.priority)}
+                  variant="filled"
+                />
+                <Button variant="text">
+                  <Link to={"/projects/" + p.id}>Details</Link>
+                </Button>
+              </Box>
+            </Box>
+          </Paper>
+        </Grid2>
+      ))}
+    </Grid2>
+  );
+};
+
+export default AllProjectsPage;
