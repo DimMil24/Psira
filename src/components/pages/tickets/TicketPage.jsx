@@ -24,7 +24,7 @@ import {
 import SendIcon from "@mui/icons-material/Send";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import HistoryTimeLine from "../../HistoryTimeline";
+import HistoryTimeLine from "../../HistoryTimeLine";
 
 const TicketPage = () => {
   let { project_id, ticket_id } = useParams();

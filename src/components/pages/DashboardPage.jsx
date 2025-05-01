@@ -1,6 +1,6 @@
 import { Box, Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import RecentsTable from "../dashboard/recentsTable";
+import RecentsTable from "../dashboard/RecentsTable";
 import OverTimeChart from "../dashboard/OverTimeChart";
 import PriorityChart from "../dashboard/PriorityChart";
 
