@@ -3,9 +3,27 @@ import Grid from "@mui/material/Grid";
 import RecentsTable from "../dashboard/RecentsTable";
 import OverTimeChart from "../dashboard/OverTimeChart";
 import PriorityChart from "../dashboard/PriorityChart";
+import { useContext, useEffect, useState } from "react";
+import { myFetchGet } from "../../utils/fetchUtils";
+import { AuthContext } from "../../auth/AuthProvider";
 
 const DashboardPage = () => {
-  return (
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState({});
+  const { token } = useContext(AuthContext);
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = await myFetchGet("dashboard", token);
+      setData(response);
+      setLoading(false);
+    };
+    getData();
+  }, [token]);
+
+  return loading ? (
+    "hi"
+  ) : (
     <Grid container columnSpacing={3} rowSpacing={3}>
       <Grid size={3}>
         <Paper elevation={2}>
@@ -27,7 +45,7 @@ const DashboardPage = () => {
               }}
             >
               <Typography color="white" variant="h6">
-                3
+                {data.totalProjects}
               </Typography>
             </Box>
           </Box>
@@ -53,7 +71,7 @@ const DashboardPage = () => {
               }}
             >
               <Typography color="white" variant="h6">
-                8
+                {data.totalTickets}
               </Typography>
             </Box>
           </Box>
@@ -79,7 +97,7 @@ const DashboardPage = () => {
               }}
             >
               <Typography color="white" variant="h6">
-                3
+                {data.openTickets}
               </Typography>
             </Box>
           </Box>
@@ -105,7 +123,7 @@ const DashboardPage = () => {
               }}
             >
               <Typography color="white" variant="h6">
-                14
+                {data.closedTickets}
               </Typography>
             </Box>
           </Box>
@@ -118,7 +136,7 @@ const DashboardPage = () => {
         <OverTimeChart />
       </Grid>
       <Grid size={6}>
-        <PriorityChart />
+        <PriorityChart newData={data.priorityTickets} />
       </Grid>
     </Grid>
   );

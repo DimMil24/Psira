@@ -1,35 +1,16 @@
 import { Paper, Typography } from "@mui/material";
 import { BarChart } from "@mui/x-charts";
 
-const dataset = [
-  {
-    label: "Low",
-    num: 10,
-  },
-  {
-    label: "Medium",
-    num: 15,
-  },
-  {
-    label: "High",
-    num: 5,
-  },
-  {
-    label: "Urgent",
-    num: 7,
-  },
-];
-
-const PriorityChart = () => {
+const PriorityChart = ({ newData }) => {
   return (
     <Paper elevation={3}>
       <Typography variant="h6">Tickets by Priority</Typography>
       <BarChart
-        dataset={dataset}
+        dataset={newData}
         xAxis={[
           {
             scaleType: "band",
-            dataKey: "label",
+            dataKey: "priority",
             colorMap: {
               type: "ordinal",
               values: ["Low", "Medium", "High", "Urgent"],
@@ -37,7 +18,7 @@ const PriorityChart = () => {
             },
           },
         ]}
-        series={[{ dataKey: "num", color: "red" }]}
+        series={[{ dataKey: "count", color: "red" }]}
         height={300}
       />
     </Paper>
