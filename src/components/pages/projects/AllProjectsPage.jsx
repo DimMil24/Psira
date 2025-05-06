@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   Chip,
-  Grid2,
+  Grid,
   Paper,
   Stack,
   Typography,
@@ -28,9 +28,9 @@ const AllProjectsPage = () => {
   }, [token]);
 
   return (
-    <Grid2 container>
+    <Grid container>
       {data.map((p) => (
-        <Grid2 key={p.id} size={4} sx={{ padding: 1 }}>
+        <Grid key={p.id} size={4} sx={{ padding: 1 }}>
           <Paper elevation={2} sx={{ height: 230 }}>
             <Box
               sx={{
@@ -78,9 +78,9 @@ const AllProjectsPage = () => {
               </Box>
             </Box>
           </Paper>
-        </Grid2>
+        </Grid>
       ))}
-    </Grid2>
+    </Grid>
   );
 };
 

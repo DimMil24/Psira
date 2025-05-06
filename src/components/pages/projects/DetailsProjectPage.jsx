@@ -4,7 +4,7 @@ import {
   Button,
   Chip,
   CircularProgress,
-  Grid2,
+  Grid,
   Paper,
   Stack,
   Tab,
@@ -185,11 +185,11 @@ const DetailsProjectPage = () => {
         <Typography textAlign={"left"} variant="h5">
           Project Managers
         </Typography>
-        <Grid2 container rowSpacing={2} p={1}>
+        <Grid container rowSpacing={2} p={1}>
           {data.users.map((user) => {
             if (user.role === "ROLE_MANAGER" || user.role === "ROLE_ADMIN")
               return (
-                <Grid2 key={user.id} size={4}>
+                <Grid key={user.id} size={4}>
                   <Box
                     sx={{
                       display: "flex",
@@ -206,24 +206,24 @@ const DetailsProjectPage = () => {
                       </Typography>
                     </Box>
                   </Box>
-                </Grid2>
+                </Grid>
               );
           })}
-        </Grid2>
+        </Grid>
       </Paper>
 
       <Paper elevation={2} sx={{ p: 2 }}>
         <Typography textAlign={"left"} variant="h5">
           Members
         </Typography>
-        <Grid2 container rowSpacing={2} p={1}>
+        <Grid container rowSpacing={2} p={1}>
           {data.users.map((user) => {
             if (
               user.role === "ROLE_DEVELOPER" ||
               user.role === "ROLE_SUBMITTER"
             )
               return (
-                <Grid2 key={user.id} size={4}>
+                <Grid key={user.id} size={4}>
                   <Box
                     sx={{
                       display: "flex",
@@ -240,10 +240,10 @@ const DetailsProjectPage = () => {
                       </Typography>
                     </Box>
                   </Box>
-                </Grid2>
+                </Grid>
               );
           })}
-        </Grid2>
+        </Grid>
       </Paper>
 
       <Paper elevation={2} sx={{ p: 2 }}>

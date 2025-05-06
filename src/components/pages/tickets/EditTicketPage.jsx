@@ -2,7 +2,7 @@ import {
   Box,
   Button,
   Chip,
-  Grid2,
+  Grid,
   MenuItem,
   Paper,
   Stack,
@@ -84,8 +84,8 @@ export default function EditTicketPage() {
             Edit Ticket
           </Typography>
           <form onSubmit={handleSubmit}>
-            <Grid2 container rowGap={3}>
-              <Grid2 size={12}>
+            <Grid container rowGap={3}>
+              <Grid size={12}>
                 <TextField
                   fullWidth
                   id="ticket_name"
@@ -95,8 +95,8 @@ export default function EditTicketPage() {
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
-              </Grid2>
-              <Grid2 size={12}>
+              </Grid>
+              <Grid size={12}>
                 <TextField
                   id="standard-multiline-static"
                   label="Ticket Description"
@@ -108,8 +108,8 @@ export default function EditTicketPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 />
-              </Grid2>
-              <Grid2 size={12}>
+              </Grid>
+              <Grid size={12}>
                 <TextField
                   id="ticket-Status"
                   label="Status"
@@ -126,8 +126,8 @@ export default function EditTicketPage() {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Grid2>
-              <Grid2 size={6} paddingRight={1}>
+              </Grid>
+              <Grid size={6} paddingRight={1}>
                 <TextField
                   id="submitter"
                   variant="outlined"
@@ -135,8 +135,8 @@ export default function EditTicketPage() {
                   defaultValue={ticketData.submittedBy.fullName}
                   disabled
                 />
-              </Grid2>
-              <Grid2 size={6} paddingLeft={1}>
+              </Grid>
+              <Grid size={6} paddingLeft={1}>
                 <TextField
                   id="developer"
                   select
@@ -154,8 +154,8 @@ export default function EditTicketPage() {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Grid2>
-              <Grid2 size={6} paddingRight={1}>
+              </Grid>
+              <Grid size={6} paddingRight={1}>
                 <TextField
                   id="ticket-priority"
                   select
@@ -171,8 +171,8 @@ export default function EditTicketPage() {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Grid2>
-              <Grid2 size={6} paddingLeft={1}>
+              </Grid>
+              <Grid size={6} paddingLeft={1}>
                 <TextField
                   id="ticket-type"
                   select
@@ -188,8 +188,8 @@ export default function EditTicketPage() {
                     </MenuItem>
                   ))}
                 </TextField>
-              </Grid2>
-            </Grid2>
+              </Grid>
+            </Grid>
             <Box
               sx={{
                 mt: 2,

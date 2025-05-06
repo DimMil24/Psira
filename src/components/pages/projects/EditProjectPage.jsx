@@ -3,7 +3,7 @@ import {
   Button,
   Chip,
   FormControl,
-  Grid2,
+  Grid,
   InputLabel,
   MenuItem,
   OutlinedInput,
@@ -105,8 +105,8 @@ export default function EditProjectPage() {
         Edit Project
       </Typography>
       <form onSubmit={handleSubmit}>
-        <Grid2 container rowGap={3}>
-          <Grid2 size={12}>
+        <Grid container rowGap={3}>
+          <Grid size={12}>
             <TextField
               fullWidth
               id="project_name"
@@ -115,8 +115,8 @@ export default function EditProjectPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-          </Grid2>
-          <Grid2 size={12}>
+          </Grid>
+          <Grid size={12}>
             <TextField
               id="standard-multiline-static"
               label="Project Description"
@@ -127,9 +127,9 @@ export default function EditProjectPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
-          </Grid2>
+          </Grid>
 
-          <Grid2 size={6} paddingRight={1}>
+          <Grid size={6} paddingRight={1}>
             <FormControl fullWidth>
               <InputLabel id="ticket-priority-label">Priority</InputLabel>
               <Select
@@ -151,8 +151,8 @@ export default function EditProjectPage() {
                 ))}
               </Select>
             </FormControl>
-          </Grid2>
-          <Grid2 size={6} paddingLeft={1}>
+          </Grid>
+          <Grid size={6} paddingLeft={1}>
             <DatePicker
               sx={{ height: 65 }}
               slotProps={{ textField: { fullWidth: true } }}
@@ -161,8 +161,8 @@ export default function EditProjectPage() {
               value={deadline}
               onChange={(e) => setDeadline(e)}
             />
-          </Grid2>
-          <Grid2 size={12}>
+          </Grid>
+          <Grid size={12}>
             <FormControl fullWidth>
               <InputLabel htmlFor="assigned_users">Users</InputLabel>
               <Select
@@ -199,8 +199,8 @@ export default function EditProjectPage() {
                 ))}
               </Select>
             </FormControl>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <Box
           sx={{
             mt: 2,

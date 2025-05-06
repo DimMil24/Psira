@@ -3,7 +3,7 @@ import {
   Box,
   Button,
   Chip,
-  Grid2,
+  Grid,
   List,
   ListItem,
   Paper,
@@ -69,8 +69,8 @@ const TicketPage = () => {
   return loading ? (
     "hi"
   ) : (
-    <Grid2 container rowGap={3} columnSpacing={2}>
-      <Grid2 size={12}>
+    <Grid container rowGap={3} columnSpacing={2}>
+      <Grid size={12}>
         <Paper elevation={2} sx={{ p: 2 }}>
           <Box
             sx={{
@@ -98,9 +98,9 @@ const TicketPage = () => {
             </Box>
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={6}>
+      <Grid size={6}>
         <Paper elevation={2} sx={{ p: 2, height: 130 }}>
           <Typography variant="h5" textAlign="left">
             Submitted By:
@@ -126,9 +126,9 @@ const TicketPage = () => {
             </Box>
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={6}>
+      <Grid size={6}>
         <Paper elevation={2} sx={{ p: 2, height: 130 }}>
           <Typography variant="h5" textAlign="left">
             Assigned To:
@@ -158,9 +158,9 @@ const TicketPage = () => {
             </Box>
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={4}>
+      <Grid size={4}>
         <Paper elevation={2}>
           <Box
             display="flex"
@@ -178,9 +178,9 @@ const TicketPage = () => {
             />
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={4}>
+      <Grid size={4}>
         <Paper elevation={2}>
           <Box
             display="flex"
@@ -198,9 +198,9 @@ const TicketPage = () => {
             />
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={4}>
+      <Grid size={4}>
         <Paper elevation={2}>
           <Box
             display="flex"
@@ -218,9 +218,9 @@ const TicketPage = () => {
             />
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={12}>
+      <Grid size={12}>
         <Paper elevation={2} sx={{ p: 2 }}>
           <Box
             sx={{
@@ -235,9 +235,9 @@ const TicketPage = () => {
             </Typography>
           </Box>
         </Paper>
-      </Grid2>
+      </Grid>
 
-      <Grid2 size={12}>
+      <Grid size={12}>
         <Paper square variant="outlined">
           <Typography textAlign={"left"} variant="h5" p={2}>
             Comments
@@ -316,8 +316,8 @@ const TicketPage = () => {
             </Button>
           </Box>
         </Paper>
-      </Grid2>
-      <Grid2 size={12}>
+      </Grid>
+      <Grid size={12}>
         <Paper square variant="outlined">
           <Typography textAlign={"left"} variant="h5" p={2}>
             History
@@ -335,8 +335,8 @@ const TicketPage = () => {
             <HistoryTimeLine historyData={data.history} />
           </Box>
         </Paper>
-      </Grid2>
-      <Grid2 size={12}>
+      </Grid>
+      <Grid size={12}>
         <Box display="flex" flexDirection="row-reverse">
           <Button color="error">
             <DeleteIcon />
@@ -347,8 +347,8 @@ const TicketPage = () => {
             <Typography variant="body2">EDIT</Typography>
           </Button>
         </Box>
-      </Grid2>
-    </Grid2>
+      </Grid>
+    </Grid>
   );
 };
 
