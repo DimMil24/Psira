@@ -146,6 +146,11 @@ public class ProjectService {
                 .build();
     }
 
+    public Long getNumberOfProjects() {
+        return projectRepository.countProjects();
+    }
+
+
     @Transactional
     public void updateProject(EditProjectRequest editProjectRequest, User user, UUID projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(

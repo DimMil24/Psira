@@ -336,4 +336,5 @@ public class TicketService {
     public Ticket getTicketById(Long ticketId) {
         return ticketRepository.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
+
 }
