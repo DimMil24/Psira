@@ -130,7 +130,7 @@ const DashboardPage = () => {
         </Paper>
       </Grid>
       <Grid size={12}>
-        <RecentsTable />
+        <RecentsTable rowData={data.dashboardTickets} />
       </Grid>
       <Grid size={6}>
         <OverTimeChart />
