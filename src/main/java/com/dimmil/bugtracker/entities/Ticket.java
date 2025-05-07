@@ -3,11 +3,11 @@ package com.dimmil.bugtracker.entities;
 import com.dimmil.bugtracker.entities.enums.TicketPriority;
 import com.dimmil.bugtracker.entities.enums.TicketStatus;
 import com.dimmil.bugtracker.entities.enums.TicketType;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 
 @Getter
@@ -29,7 +29,7 @@ public class Ticket {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "assigned_to", nullable = true)
+    @JoinColumn(name = "assigned_to")
     private User assigned;
 
     @ManyToOne
@@ -61,8 +61,10 @@ public class Ticket {
     private TicketType type;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "ticket", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<History> history;
 }

@@ -1,9 +1,7 @@
 package com.dimmil.bugtracker.repositories;
 
 import com.dimmil.bugtracker.entities.Project;
-import com.dimmil.bugtracker.entities.enums.ProjectPriority;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -17,7 +15,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query("select p from Project p join p.users pu where pu.id = :userId")
     List<Project> getProjectsThatUserIsPartOf(@Param("userId") Long userId);
 
-    @Query("select count(p) from Project p")
-    Long countProjects();
+    @Query("select count(p) from Project p join p.users pu where pu.id = :userId")
+    Long countProjects(@Param("userId") Long userId);
 
 }

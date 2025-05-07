@@ -10,7 +10,7 @@ import com.dimmil.bugtracker.entities.enums.TicketStatus;
 import com.dimmil.bugtracker.entities.enums.TicketType;
 import com.dimmil.bugtracker.entities.requests.ticket.CreateTicketRequest;
 import com.dimmil.bugtracker.entities.requests.ticket.UpdateTicketRequest;
-import com.dimmil.bugtracker.entities.responses.history.HistoryResponse;
+import com.dimmil.bugtracker.entities.responses.dashboard.TicketDashboardResponse;
 import com.dimmil.bugtracker.entities.responses.ticket.*;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
@@ -19,6 +19,7 @@ import com.dimmil.bugtracker.repositories.HistoryRepository;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,6 +38,7 @@ public class TicketService {
     private final ProjectRepository projectRepository;
     private final HistoryRepository historyRepository;
     private final DateTimeFormatter dateTimeFormatter;
+    private final DateTimeFormatter dateTimeFormatterShort;
     private final HistoryService historyService;
 
     @Transactional
@@ -192,23 +194,11 @@ public class TicketService {
     public AllTicketsResponse getAllTickets(User user, boolean open) {
         var data = new ArrayList<TicketPreviewResponse>();
         var list = new ArrayList<Ticket>();
-        for (Project project : projectRepository.getProjectsThatUserIsPartOf(user.getId())) {
-            if (open) {
-                list.addAll(ticketRepository.getOpenTicketsByProjectIdOrderedByDate(project.getId()));
-            } else {
-                list.addAll(ticketRepository.getResolvedTicketsByProjectIdOrderedByDate(project.getId()));
-            }
+        if (open) {
+            list.addAll(ticketRepository.getAllOpenTicketsThatUserIsPartOf(user.getId()));
+        } else {
+            list.addAll(ticketRepository.getAllResolvedTicketsThatUserIsPartOf(user.getId()));
         }
-
-        list.sort((o1, o2) -> {
-            if (o1.getModified().isBefore(o2.getModified())) {
-                return 1;
-            } else if (o1.getModified().isAfter(o2.getModified())) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
         for (Ticket ticket : list) {
             data.add(TicketPreviewResponse.builder()
                     .id(ticket.getId())
@@ -337,4 +327,29 @@ public class TicketService {
         return ticketRepository.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
 
+    public List<TicketDashboardResponse> getLast5ModifiedTickets(Long userId) {
+        List<Ticket> tickets = ticketRepository.getAllTicketsThatUserIsPartOfLimit(userId, Limit.of(5));
+        List<TicketDashboardResponse> responses = new ArrayList<>();
+
+        for (Ticket ticket : tickets) {
+            String userAssigned;
+            if (ticket.getAssigned() != null) {
+                userAssigned = ticket.getAssigned().getFullName();
+            } else {
+                userAssigned = "Unassigned";
+            }
+            responses.add(
+                    TicketDashboardResponse
+                            .builder()
+                            .id(ticket.getId())
+                            .name(ticket.getName())
+                            .type(ticket.getType().getLabel())
+                            .status(ticket.getStatus().getLabel())
+                            .modified(ticket.getModified().format(dateTimeFormatterShort))
+                            .assigned(userAssigned)
+                            .build()
+            );
+        }
+        return responses;
+    }
 }

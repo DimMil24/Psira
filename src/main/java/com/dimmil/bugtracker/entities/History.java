@@ -1,6 +1,7 @@
 package com.dimmil.bugtracker.entities;
 
 import com.dimmil.bugtracker.entities.enums.HistoryEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,10 +23,12 @@ public class History {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
+    @JsonBackReference
     private Ticket ticket;
 
     @Column(name = "type")

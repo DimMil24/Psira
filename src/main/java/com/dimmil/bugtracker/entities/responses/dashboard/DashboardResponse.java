@@ -13,4 +13,5 @@ public class DashboardResponse {
     private Long openTickets;
     private Long closedTickets;
     private List<TicketNumberByPriorityResponse> priorityTickets;
+    private List<TicketDashboardResponse> dashboardTickets;
 }

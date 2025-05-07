@@ -2,6 +2,7 @@ package com.dimmil.bugtracker.entities;
 
 import com.dimmil.bugtracker.entities.enums.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import lombok.*;
@@ -46,6 +47,7 @@ public class User implements UserDetails {
     @JsonBackReference
     private Set<Project> projects;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user")
     private List<History> history;
 

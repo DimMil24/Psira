@@ -1,5 +1,6 @@
 package com.dimmil.bugtracker.services;
 
+import com.dimmil.bugtracker.entities.User;
 import com.dimmil.bugtracker.entities.enums.TicketStatus;
 import com.dimmil.bugtracker.entities.responses.dashboard.DashboardResponse;
 import com.dimmil.bugtracker.entities.responses.dashboard.TicketNumberByPriorityResponse;
@@ -17,10 +18,11 @@ import java.util.List;
 public class DashboardService {
     private final ProjectService projectService;
     private final TicketRepository ticketRepository;
-    
-    public DashboardResponse getDashboard() {
-        var totalProjects = projectService.getNumberOfProjects();
-        var totalTickets = ticketRepository.countTicketsByStatus();
+    private final TicketService ticketService;
+
+    public DashboardResponse getDashboard(User user) {
+        var totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
+        var totalTickets = ticketRepository.countTicketsByStatus(user.getId());
 
         long openTickets = 0;
         long closedTickets = 0;
@@ -33,7 +35,7 @@ public class DashboardService {
             }
         }
 
-        var ticketsByPriority = ticketRepository.countTicketsByPriority();
+        var ticketsByPriority = ticketRepository.countTicketsByPriority(user.getId());
         List<TicketNumberByPriorityResponse> priorityTickets = new ArrayList<>();
         for (ticketCountByPriority tc : ticketsByPriority) {
             priorityTickets.add(
@@ -45,6 +47,8 @@ public class DashboardService {
             );
         }
 
+        var recentTickets = ticketService.getLast5ModifiedTickets(user.getId());
+
         return DashboardResponse
                 .builder()
                 .totalProjects(totalProjects)
@@ -52,6 +56,8 @@ public class DashboardService {
                 .openTickets(openTickets)
                 .totalTickets(openTickets + closedTickets)
                 .priorityTickets(priorityTickets)
+                .dashboardTickets(recentTickets)
                 .build();
     }
+
 }

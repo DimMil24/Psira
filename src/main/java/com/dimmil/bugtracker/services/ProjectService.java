@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -68,10 +67,6 @@ public class ProjectService {
             );
         }
         return response;
-    }
-
-    public Project findProjectById(UUID project_id) {
-        return projectRepository.findById(project_id).orElseThrow(() -> new ProjectNotFoundException(project_id));
     }
 
     public List<ProjectPreviewResponse> getAllProjectsWithUserNameOnly(User user) {
@@ -146,8 +141,8 @@ public class ProjectService {
                 .build();
     }
 
-    public Long getNumberOfProjects() {
-        return projectRepository.countProjects();
+    public Long getNumberOfProjectsThatUserIsPartOf(User user) {
+        return projectRepository.countProjects(user.getId());
     }
 
 
