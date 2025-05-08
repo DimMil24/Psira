@@ -2,7 +2,7 @@ package com.dimmil.bugtracker.repositories;
 
 import com.dimmil.bugtracker.entities.Ticket;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByPriority;
-import com.dimmil.bugtracker.projections.dashboard.ticketCountByType;
+import com.dimmil.bugtracker.projections.dashboard.ticketCountByStatus;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -32,7 +32,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> getResolvedTicketsByProjectIdOrderedByDate(@Param("projectId") UUID projectId);
 
     @Query("select t.status as status,count(t) as count from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) group by t.status")
-    List<ticketCountByType> countTicketsByStatus(@Param("userId") Long userId);
+    List<ticketCountByStatus> countTicketsByStatus(@Param("userId") Long userId);
 
     @Query("select t.priority as priority,count(t) as count from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) group by t.priority")
     List<ticketCountByPriority> countTicketsByPriority(@Param("userId") Long userId);

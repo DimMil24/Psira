@@ -19,5 +19,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("select u from User u join u.projects p where p.id = :projectId and u.role = 'ROLE_DEVELOPER' ")
     List<User> getDevsInProject(@Param("projectId") UUID projectId);
 
+    @Query("select u from User u where u.id <> (select p.owner.id from Project p where p.id = :projectId )")
+    List<User>getAllUsersExceptOwner(@Param("projectId") UUID projectId);
+
     Optional<User> findByEmail(String email);
 }

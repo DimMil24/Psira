@@ -5,7 +5,6 @@ import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.user.UserNotFoundException;
 import com.dimmil.bugtracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Limit;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -39,8 +38,23 @@ public class UserService {
         return response;
     }
 
+    public List<UserResponse> findAllUsersExceptOwner(UUID projectId) {
+        var users = userRepository.getAllUsersExceptOwner(projectId);
+        var response = new ArrayList<UserResponse>();
+        for (var user : users) {
+            response.add(
+                    UserResponse.builder()
+                            .id(user.getId())
+                            .role(user.getRole().name())
+                            .fullName(user.getFullName())
+                            .build()
+            );
+        }
+        return response;
+    }
+
     public User findById(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException());
+        return userRepository.findById(id).orElseThrow(UserNotFoundException::new);
     }
 
     public List<User> getTop3UsersofProject(UUID projectId) {
@@ -50,4 +64,5 @@ public class UserService {
     public List<User> getDevsInProject(UUID projectId) {
         return userRepository.getDevsInProject(projectId);
     }
+
 }

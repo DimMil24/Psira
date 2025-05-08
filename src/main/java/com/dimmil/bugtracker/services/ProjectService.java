@@ -14,6 +14,7 @@ import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Limit;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -145,6 +146,11 @@ public class ProjectService {
         return projectRepository.countProjects(user.getId());
     }
 
+    public List<Project> get5ProjectsWithDeadlineClose(Long userId) {
+        LocalDate today = LocalDate.now();
+        LocalDate nextMonth = today.plusMonths(1);
+        return projectRepository.getProjectsWithDeadlineClose(userId,today,nextMonth, Limit.of(5));
+    }
 
     @Transactional
     public void updateProject(EditProjectRequest editProjectRequest, User user, UUID projectId) {
