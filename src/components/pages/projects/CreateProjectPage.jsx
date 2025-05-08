@@ -53,7 +53,7 @@ export default function CreateProjectPage() {
 
   useEffect(() => {
     const getData = async () => {
-      const data = await myFetchGet("user", token);
+      const data = await myFetchGet("user/caller", token);
       setUserData(data);
     };
 

@@ -62,7 +62,7 @@ export default function EditProjectPage() {
       setPriority(data.priority);
       setDeadline(dayjs(data.deadline));
       setPersonName(data.users.map((e) => e.id));
-      const userData = await myFetchGet("user", token);
+      const userData = await myFetchGet("user/owner/" + project_id, token);
       setUserData(userData);
       setLoading(false);
     };

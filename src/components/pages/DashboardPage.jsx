@@ -1,11 +1,12 @@
 import { Box, Paper, Typography } from "@mui/material";
 import Grid from "@mui/material/Grid";
 import RecentsTable from "../dashboard/RecentsTable";
-import OverTimeChart from "../dashboard/OverTimeChart";
 import PriorityChart from "../dashboard/PriorityChart";
 import { useContext, useEffect, useState } from "react";
 import { myFetchGet } from "../../utils/fetchUtils";
 import { AuthContext } from "../../auth/AuthProvider";
+import StatusChart from "../dashboard/StatusChart";
+import DeadlineProjectsTable from "../dashboard/DeadlineProjectsTable";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
@@ -133,10 +134,13 @@ const DashboardPage = () => {
         <RecentsTable rowData={data.dashboardTickets} />
       </Grid>
       <Grid size={6}>
-        <OverTimeChart />
+        <StatusChart chartData={data.statusTickets} />
       </Grid>
       <Grid size={6}>
         <PriorityChart newData={data.priorityTickets} />
+      </Grid>
+      <Grid size={12}>
+        <DeadlineProjectsTable rowData={data.deadlineProjects} />
       </Grid>
     </Grid>
   );
