@@ -15,5 +15,7 @@ public class DashboardResponse {
     private List<TicketNumberByPriorityResponse> priorityTickets;
     private List<TicketNumberByStatusResponse> statusTickets;
     private List<ProjectDeadlineResponse> deadlineProjects;
+    private List<ProjectNumberByPriorityResponse> projectNumberByPriority;
+    private List<TicketCountByProjectResponse> ticketCountByProject;
     private List<TicketDashboardResponse> dashboardTickets;
 }

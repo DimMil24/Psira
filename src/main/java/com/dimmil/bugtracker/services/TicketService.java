@@ -15,6 +15,7 @@ import com.dimmil.bugtracker.entities.responses.ticket.*;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
 import com.dimmil.bugtracker.exceptions.ticket.TicketNotFoundException;
+import com.dimmil.bugtracker.projections.dashboard.ticketCountByProject;
 import com.dimmil.bugtracker.repositories.HistoryRepository;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.TicketRepository;
@@ -351,5 +352,9 @@ public class TicketService {
             );
         }
         return responses;
+    }
+
+    public List<ticketCountByProject> getTicketCountByProject(Long userId) {
+        return ticketRepository.countTicketsByProject(userId);
     }
 }

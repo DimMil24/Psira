@@ -3,11 +3,10 @@ package com.dimmil.bugtracker.services;
 import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.User;
 import com.dimmil.bugtracker.entities.enums.TicketStatus;
-import com.dimmil.bugtracker.entities.responses.dashboard.DashboardResponse;
-import com.dimmil.bugtracker.entities.responses.dashboard.ProjectDeadlineResponse;
-import com.dimmil.bugtracker.entities.responses.dashboard.TicketNumberByPriorityResponse;
-import com.dimmil.bugtracker.entities.responses.dashboard.TicketNumberByStatusResponse;
+import com.dimmil.bugtracker.entities.responses.dashboard.*;
+import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByPriority;
+import com.dimmil.bugtracker.projections.dashboard.ticketCountByProject;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByStatus;
 import com.dimmil.bugtracker.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +73,30 @@ public class DashboardService {
             );
         }
 
+        var projectNumberByPriority = projectService.getProjectsCountByPriority(user.getId());
+        List<ProjectNumberByPriorityResponse> projectNumberByPriorityResponse = new ArrayList<>();
+        for (projectCountByPriority p : projectNumberByPriority) {
+            projectNumberByPriorityResponse.add(
+                    ProjectNumberByPriorityResponse
+                            .builder()
+                            .label(p.getPriority().getLabel())
+                            .value(p.getCount())
+                            .build()
+            );
+        }
+
+        var ticketsByProject = ticketService.getTicketCountByProject(user.getId());
+        List<TicketCountByProjectResponse> ticketCountByProjectResponse = new ArrayList<>();
+        for (ticketCountByProject p : ticketsByProject) {
+            ticketCountByProjectResponse.add(
+                    TicketCountByProjectResponse
+                            .builder()
+                            .name(p.getName())
+                            .count(p.getCount())
+                            .build()
+            );
+        }
+
         return DashboardResponse
                 .builder()
                 .totalProjects(totalProjects)
@@ -83,6 +106,8 @@ public class DashboardService {
                 .priorityTickets(priorityTickets)
                 .statusTickets(ticketsByStatus)
                 .deadlineProjects(deadlineProjects)
+                .projectNumberByPriority(projectNumberByPriorityResponse)
+                .ticketCountByProject(ticketCountByProjectResponse)
                 .dashboardTickets(recentTickets)
                 .build();
     }

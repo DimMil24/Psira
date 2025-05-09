@@ -1,6 +1,7 @@
 package com.dimmil.bugtracker.repositories;
 
 import com.dimmil.bugtracker.entities.Project;
+import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
 import org.springframework.data.domain.Limit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,4 +24,6 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query("select count(p) from Project p join p.users pu where pu.id = :userId")
     Long countProjects(@Param("userId") Long userId);
 
+    @Query("select count(p) as count, p.priority as priority from Project p join p.users pu where pu.id = :userId group by  p.priority")
+    List<projectCountByPriority> countProjectsByPriority(@Param("userId") Long userId);
 }

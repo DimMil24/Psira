@@ -11,6 +11,7 @@ import com.dimmil.bugtracker.entities.responses.project.ProjectResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserNameResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
+import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -144,6 +145,10 @@ public class ProjectService {
 
     public Long getNumberOfProjectsThatUserIsPartOf(User user) {
         return projectRepository.countProjects(user.getId());
+    }
+
+    public List<projectCountByPriority> getProjectsCountByPriority(Long userId) {
+        return projectRepository.countProjectsByPriority(userId);
     }
 
     public List<Project> get5ProjectsWithDeadlineClose(Long userId) {
