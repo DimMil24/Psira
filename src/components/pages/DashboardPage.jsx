@@ -9,6 +9,7 @@ import StatusChart from "../dashboard/StatusChart";
 import DeadlineProjectsTable from "../dashboard/DeadlineProjectsTable";
 import ProjectCountChart from "../dashboard/ProjectCountChart";
 import TicketCountByProject from "../dashboard/TicketCountByProject";
+import Loading from "../Loading";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
@@ -25,7 +26,7 @@ const DashboardPage = () => {
   }, [token]);
 
   return loading ? (
-    "hi"
+    <Loading loadingProp={loading} />
   ) : (
     <Grid container columnSpacing={3} rowSpacing={3}>
       <Grid size={3}>

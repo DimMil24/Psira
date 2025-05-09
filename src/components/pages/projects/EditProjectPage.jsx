@@ -18,8 +18,9 @@ import { useContext, useEffect, useState } from "react";
 import priorities from "../../../utils/priorities";
 import { myFetchGet, myFetchPut } from "../../../utils/fetchUtils";
 import { AuthContext } from "../../../auth/AuthProvider";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import dayjs from "dayjs";
+import Loading from "../../Loading";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -52,6 +53,7 @@ export default function EditProjectPage() {
   const [userData, setUserData] = useState([]);
   const [loading, setLoading] = useState(true);
   let { project_id } = useParams();
+  let navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
@@ -81,6 +83,7 @@ export default function EditProjectPage() {
         users: personName,
         ownerId: owner.id,
       });
+      navigate("/projects");
     } catch (err) {
       console.log(err);
     }
@@ -98,7 +101,7 @@ export default function EditProjectPage() {
   };
 
   return loading ? (
-    "hi"
+    <Loading loadingProp={loading} />
   ) : (
     <Paper elevation={2} sx={{ p: 2 }}>
       <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">

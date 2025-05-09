@@ -25,6 +25,7 @@ import SendIcon from "@mui/icons-material/Send";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HistoryTimeLine from "../../HistoryTimeLine";
+import Loading from "../../Loading";
 
 const TicketPage = () => {
   let { project_id, ticket_id } = useParams();
@@ -67,7 +68,7 @@ const TicketPage = () => {
   }, [token, ticket_id, project_id]);
 
   return loading ? (
-    "hi"
+    <Loading loadingProp={loading} />
   ) : (
     <Grid container rowGap={3} columnSpacing={2}>
       <Grid size={12}>

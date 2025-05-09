@@ -9,7 +9,7 @@ const TicketCountByProject = ({ newData }) => {
       </Typography>
       <BarChart
         margin={{
-          left: 0,
+          left: 35,
           right: 0,
           top: 30,
           bottom: 30,
