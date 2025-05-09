@@ -43,12 +43,14 @@ export default function ResolvedTicketsPage() {
                   <Avatar {...stringAvatar(t.submitted)} />
                 </ListItemAvatar>
                 <ListItemText
+                  sx={{ wordBreak: "break-word" }}
                   primary={t.name}
                   secondary={
                     <>
                       <Box display="flex" flexDirection="row" columnGap={1}>
                         <Chip
                           label={t.projectName}
+                          style={{ maxWidth: 400 }}
                           variant="filled"
                           size="small"
                         />

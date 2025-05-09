@@ -54,6 +54,7 @@ export default function OpenTicketsPage() {
                       <Box display="flex" flexDirection="row" columnGap={1}>
                         <Chip
                           label={t.projectName}
+                          style={{ maxWidth: 400 }}
                           variant="filled"
                           size="small"
                         />

@@ -29,7 +29,11 @@ const RecentsTable = ({ rowData }) => {
               key={row.id}
               sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
-              <TableCell component="th" scope="row">
+              <TableCell
+                sx={{ wordBreak: "break-word" }}
+                component="th"
+                scope="row"
+              >
                 {row.name}
               </TableCell>
               <TableCell align="right">

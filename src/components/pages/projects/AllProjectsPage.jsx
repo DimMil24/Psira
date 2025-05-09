@@ -40,7 +40,15 @@ const AllProjectsPage = () => {
                 textAlign: "left",
               }}
             >
-              <Typography sx={{ p: 1 }} variant="body1">
+              <Typography
+                sx={{
+                  p: 1,
+                  textOverflow: "ellipsis",
+                  overflow: "hidden",
+                  whiteSpace: "nowrap",
+                }}
+                variant="body1"
+              >
                 {p.projectName}
               </Typography>
               <Typography sx={{ ml: 1 }} variant="body2">

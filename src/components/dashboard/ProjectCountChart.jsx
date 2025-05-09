@@ -1,25 +1,25 @@
 import { Paper, Typography } from "@mui/material";
 import { PieChart } from "@mui/x-charts";
 
-const StatusChart = ({ chartData }) => {
+const ProjectCountChart = ({ chartData }) => {
   chartData.map((e) => {
-    if (e.label === "New") {
+    if (e.label === "Low") {
       return { ...(e.color = "#008cf8") };
     }
-    if (e.label === "In Development") {
+    if (e.label === "Medium") {
       return { ...(e.color = "#00d088") };
     }
-    if (e.label === "Testing") {
+    if (e.label === "High") {
       return { ...(e.color = "#eba317") };
     }
-    if (e.label === "Resolved") {
+    if (e.label === "Urgent") {
       return { ...(e.color = "#fe445f") };
     }
   });
   return (
     <Paper sx={{ padding: 2 }} elevation={3}>
       <Typography textAlign="left" variant="h6">
-        Tickets by Status
+        Project by Status
       </Typography>
       <PieChart
         series={[
@@ -34,4 +34,4 @@ const StatusChart = ({ chartData }) => {
   );
 };
 
-export default StatusChart;
+export default ProjectCountChart;

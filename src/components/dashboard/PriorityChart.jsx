@@ -3,8 +3,10 @@ import { BarChart } from "@mui/x-charts";
 
 const PriorityChart = ({ newData }) => {
   return (
-    <Paper elevation={3}>
-      <Typography variant="h6">Tickets by Priority</Typography>
+    <Paper sx={{ padding: 2 }} elevation={3}>
+      <Typography textAlign="left" variant="h6">
+        Tickets by Priority
+      </Typography>
       <BarChart
         dataset={newData}
         xAxis={[

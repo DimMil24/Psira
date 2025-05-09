@@ -7,6 +7,8 @@ import { myFetchGet } from "../../utils/fetchUtils";
 import { AuthContext } from "../../auth/AuthProvider";
 import StatusChart from "../dashboard/StatusChart";
 import DeadlineProjectsTable from "../dashboard/DeadlineProjectsTable";
+import ProjectCountChart from "../dashboard/ProjectCountChart";
+import TicketCountByProject from "../dashboard/TicketCountByProject";
 
 const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
@@ -141,6 +143,12 @@ const DashboardPage = () => {
       </Grid>
       <Grid size={12}>
         <DeadlineProjectsTable rowData={data.deadlineProjects} />
+      </Grid>
+      <Grid size={6}>
+        <TicketCountByProject newData={data.ticketCountByProject} />
+      </Grid>
+      <Grid size={6}>
+        <ProjectCountChart chartData={data.projectNumberByPriority} />
       </Grid>
     </Grid>
   );

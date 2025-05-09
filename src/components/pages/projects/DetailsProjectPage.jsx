@@ -137,7 +137,9 @@ const DetailsProjectPage = () => {
             rowGap: 1,
           }}
         >
-          <Typography variant="h4">{data.projectName}</Typography>
+          <Typography sx={{ wordBreak: "break-word" }} variant="h4">
+            {data.projectName}
+          </Typography>
           <Typography variant="body1">
             {data.startDate} - {data.deadline}
           </Typography>
@@ -177,7 +179,9 @@ const DetailsProjectPage = () => {
           }}
         >
           <Typography variant="h5">Description</Typography>
-          <Typography>{data.description}</Typography>
+          <Typography sx={{ wordBreak: "break-word" }}>
+            {data.description}
+          </Typography>
         </Box>
       </Paper>
 
