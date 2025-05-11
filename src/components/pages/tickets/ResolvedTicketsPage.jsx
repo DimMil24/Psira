@@ -16,20 +16,25 @@ import {
 import { stringAvatar } from "../../../utils/avatarUtils";
 import { getColorPriority, getColorType } from "../../../utils/chipUtils";
 import { Link } from "react-router";
+import Loading from "../../Loading";
 
 export default function ResolvedTicketsPage() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const getData = async () => {
       const response = await myFetchGet("tickets/resolved", token);
       setData(response.tickets);
+      setLoading(false);
     };
     getData();
   }, [token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Paper elevation={2}>
       <List>
         {data.map((t) => {

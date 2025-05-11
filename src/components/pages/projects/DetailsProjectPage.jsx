@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Chip,
-  CircularProgress,
   Grid,
   Paper,
   Stack,
@@ -27,6 +26,7 @@ import { getRole } from "../../../utils/roleDisplayUtils";
 import { getColorPriority, getColorType } from "../../../utils/chipUtils";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Loading from "../../Loading";
 
 const DetailsProjectPage = () => {
   let navigate = useNavigate();
@@ -125,7 +125,7 @@ const DetailsProjectPage = () => {
   }, [token, project_id]);
 
   return loading ? (
-    <CircularProgress size="3rem" />
+    <Loading loadingProp={loading} />
   ) : (
     <Stack spacing={3}>
       <Paper elevation={2} sx={{ p: 2 }}>

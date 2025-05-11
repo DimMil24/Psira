@@ -19,6 +19,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthProvider";
 import { myFetchGet, myFetchPost } from "../../../utils/fetchUtils";
 import { useNavigate } from "react-router";
+import Loading from "../../Loading";
 
 export default function SubmitTicketPage() {
   const [projectData, setProjectData] = useState([]);
@@ -67,7 +68,9 @@ export default function SubmitTicketPage() {
     getData();
   }, [token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Stack>
       <Paper elevation={2} sx={{ mb: 3, p: 2 }}>
         <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">

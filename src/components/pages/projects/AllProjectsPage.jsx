@@ -14,20 +14,25 @@ import { AuthContext } from "../../../auth/AuthProvider";
 import { Link } from "react-router";
 import { stringAvatar } from "../../../utils/avatarUtils";
 import { getColorPriority } from "../../../utils/chipUtils";
+import Loading from "../../Loading";
 
 const AllProjectsPage = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const getData = async () => {
       const response = await myFetchGet("projects", token);
       setData(response);
+      setLoading(false);
     };
     getData();
   }, [token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Grid container>
       {data.map((p) => (
         <Grid key={p.id} size={4} sx={{ padding: 1 }}>

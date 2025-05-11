@@ -20,20 +20,25 @@ import {
   getColorType,
 } from "../../../utils/chipUtils";
 import { Link } from "react-router";
+import Loading from "../../Loading";
 
 export default function OpenTicketsPage() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
     const getData = async () => {
       const response = await myFetchGet("tickets/open", token);
       setData(response.tickets);
+      setLoading(false);
     };
     getData();
   }, [token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Paper elevation={2}>
       <List>
         {data.map((t) => {

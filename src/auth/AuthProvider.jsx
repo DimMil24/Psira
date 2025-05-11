@@ -38,28 +38,6 @@ export const AuthProvider = ({ children }) => {
     validateToken();
   }, [token]);
 
-  const login = async (email, password) => {
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email: email, password: password }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`Response status: ${response.status}`);
-      }
-      const data = await response.json();
-      localStorage.setItem("token", data.token);
-      setToken(data.token);
-    } catch (error) {
-      console.error("Login failedhmm", error);
-    }
-  };
-
   const register = async (email, firstname, lastname, password, role) => {
     try {
       const response = await fetch(
@@ -92,7 +70,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, register, logout }}>
+    <AuthContext.Provider value={{ user, token, setToken, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

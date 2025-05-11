@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Container,
   TextField,
@@ -7,24 +7,50 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { AuthContext } from "../../../auth/AuthProvider";
 import { useNavigate } from "react-router";
+import { AuthContext } from "../../../auth/AuthProvider";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const { login } = useContext(AuthContext);
+  const [error, setError] = useState();
+  const [success, setSuccess] = useState(false);
+  const { setToken } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) navigate("/");
+  }, [success, navigate]);
+
+  const login = async (email, password) => {
+    try {
+      const response = await fetch("http://localhost:8080/auth/login", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email: email, password: password }),
+      });
+
+      if (!response.ok) {
+        setError("Invalid Credentials");
+        setEmail("");
+        setPassword("");
+        return;
+      }
+      const data = await response.json();
+      localStorage.setItem("token", data.token);
+      setToken(data.token);
+      setSuccess(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      await login(email, password);
-      navigate("/projects");
-    } catch (err) {
-      setError(err);
-    }
+    await login(email, password);
   };
 
   return (

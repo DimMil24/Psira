@@ -20,9 +20,11 @@ import {
   getColorType,
 } from "../../../utils/chipUtils";
 import { Link } from "react-router";
+import Loading from "../../Loading";
 
 export default function MyTicketsPage() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { token } = useContext(AuthContext);
 
   useEffect(() => {
@@ -31,9 +33,12 @@ export default function MyTicketsPage() {
       setData(response.tickets);
     };
     getData();
+    setLoading(false);
   }, [token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Paper elevation={2}>
       <List>
         {data.map((t) => {

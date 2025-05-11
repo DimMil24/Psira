@@ -20,6 +20,7 @@ import { myFetchGet, myFetchPost } from "../../../utils/fetchUtils";
 import { AuthContext } from "../../../auth/AuthProvider";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router";
+import Loading from "../../Loading";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -49,12 +50,14 @@ export default function CreateProjectPage() {
   const theme = useTheme();
   const { token } = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
+  const [loading, setLoading] = useState(true);
   let navigate = useNavigate();
 
   useEffect(() => {
     const getData = async () => {
       const data = await myFetchGet("user/caller", token);
       setUserData(data);
+      setLoading(false);
     };
 
     getData();
@@ -86,7 +89,9 @@ export default function CreateProjectPage() {
     );
   };
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Paper elevation={2} sx={{ p: 2 }}>
       <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">
         Create Project

@@ -16,6 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthProvider";
 import { myFetchGet, myFetchPut } from "../../../utils/fetchUtils";
 import { useNavigate, useParams } from "react-router";
+import Loading from "../../Loading";
 
 export default function EditTicketPage() {
   const [ticketData, setTicketData] = useState();
@@ -76,134 +77,134 @@ export default function EditTicketPage() {
     getDevelopers();
   }, [project_id, ticket_id, token]);
 
-  return (
+  return loading ? (
+    <Loading loadingProp={loading} />
+  ) : (
     <Stack>
-      {!loading && (
-        <Paper elevation={2} sx={{ p: 2 }}>
-          <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">
-            Edit Ticket
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <Grid container rowGap={3}>
-              <Grid size={12}>
-                <TextField
-                  fullWidth
-                  id="ticket_name"
-                  label="Ticket Name"
-                  variant="outlined"
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-              </Grid>
-              <Grid size={12}>
-                <TextField
-                  id="standard-multiline-static"
-                  label="Ticket Description"
-                  multiline
-                  required
-                  rows={3}
-                  variant="outlined"
-                  fullWidth
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                />
-              </Grid>
-              <Grid size={12}>
-                <TextField
-                  id="ticket-Status"
-                  label="Status"
-                  select
-                  variant="outlined"
-                  fullWidth
-                  sx={{ textAlign: "left" }}
-                  value={status}
-                  onChange={(e) => setStatus(e.target.value)}
-                >
-                  {ticketStatus.map((ticket) => (
-                    <MenuItem key={ticket.label} value={ticket.label}>
-                      <Chip label={ticket.label} color={ticket.color} />
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid size={6} paddingRight={1}>
-                <TextField
-                  id="submitter"
-                  variant="outlined"
-                  fullWidth
-                  defaultValue={ticketData.submittedBy.fullName}
-                  disabled
-                />
-              </Grid>
-              <Grid size={6} paddingLeft={1}>
-                <TextField
-                  id="developer"
-                  select
-                  label="Developer"
-                  value={developer}
-                  onChange={(e) => setDeveloper(e.target.value)}
-                  fullWidth
-                  required
-                  sx={{ textAlign: "left" }}
-                >
-                  <MenuItem value="-1">Unassigned</MenuItem>
-                  {devData.map((dev) => (
-                    <MenuItem key={dev.id} value={dev.id}>
-                      {dev.fullName}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid size={6} paddingRight={1}>
-                <TextField
-                  id="ticket-priority"
-                  select
-                  label="Priority"
-                  fullWidth
-                  sx={{ textAlign: "left" }}
-                  value={priority}
-                  onChange={(e) => setPriority(e.target.value)}
-                >
-                  {priorities.map((ticket) => (
-                    <MenuItem key={ticket.label} value={ticket.label}>
-                      <Chip label={ticket.label} color={ticket.color} />
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid size={6} paddingLeft={1}>
-                <TextField
-                  id="ticket-type"
-                  select
-                  label="Type"
-                  fullWidth
-                  sx={{ textAlign: "left" }}
-                  value={type}
-                  onChange={(e) => setType(e.target.value)}
-                >
-                  {ticketType.map((ticket) => (
-                    <MenuItem key={ticket.label} value={ticket.label}>
-                      <Chip label={ticket.label} color={ticket.color} />
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
+      <Paper elevation={2} sx={{ p: 2 }}>
+        <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">
+          Edit Ticket
+        </Typography>
+        <form onSubmit={handleSubmit}>
+          <Grid container rowGap={3}>
+            <Grid size={12}>
+              <TextField
+                fullWidth
+                id="ticket_name"
+                label="Ticket Name"
+                variant="outlined"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
             </Grid>
-            <Box
-              sx={{
-                mt: 2,
-                display: "flex",
-                flexDirection: "row-reverse",
-              }}
-            >
-              <Button type="submit" variant="contained">
-                Submit
-              </Button>
-            </Box>
-          </form>
-        </Paper>
-      )}
+            <Grid size={12}>
+              <TextField
+                id="standard-multiline-static"
+                label="Ticket Description"
+                multiline
+                required
+                rows={3}
+                variant="outlined"
+                fullWidth
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+              />
+            </Grid>
+            <Grid size={12}>
+              <TextField
+                id="ticket-Status"
+                label="Status"
+                select
+                variant="outlined"
+                fullWidth
+                sx={{ textAlign: "left" }}
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+              >
+                {ticketStatus.map((ticket) => (
+                  <MenuItem key={ticket.label} value={ticket.label}>
+                    <Chip label={ticket.label} color={ticket.color} />
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={6} paddingRight={1}>
+              <TextField
+                id="submitter"
+                variant="outlined"
+                fullWidth
+                defaultValue={ticketData.submittedBy.fullName}
+                disabled
+              />
+            </Grid>
+            <Grid size={6} paddingLeft={1}>
+              <TextField
+                id="developer"
+                select
+                label="Developer"
+                value={developer}
+                onChange={(e) => setDeveloper(e.target.value)}
+                fullWidth
+                required
+                sx={{ textAlign: "left" }}
+              >
+                <MenuItem value="-1">Unassigned</MenuItem>
+                {devData.map((dev) => (
+                  <MenuItem key={dev.id} value={dev.id}>
+                    {dev.fullName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={6} paddingRight={1}>
+              <TextField
+                id="ticket-priority"
+                select
+                label="Priority"
+                fullWidth
+                sx={{ textAlign: "left" }}
+                value={priority}
+                onChange={(e) => setPriority(e.target.value)}
+              >
+                {priorities.map((ticket) => (
+                  <MenuItem key={ticket.label} value={ticket.label}>
+                    <Chip label={ticket.label} color={ticket.color} />
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+            <Grid size={6} paddingLeft={1}>
+              <TextField
+                id="ticket-type"
+                select
+                label="Type"
+                fullWidth
+                sx={{ textAlign: "left" }}
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+              >
+                {ticketType.map((ticket) => (
+                  <MenuItem key={ticket.label} value={ticket.label}>
+                    <Chip label={ticket.label} color={ticket.color} />
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              mt: 2,
+              display: "flex",
+              flexDirection: "row-reverse",
+            }}
+          >
+            <Button type="submit" variant="contained">
+              Submit
+            </Button>
+          </Box>
+        </form>
+      </Paper>
     </Stack>
   );
 }
