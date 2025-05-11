@@ -25,8 +25,9 @@ export default function SubmitTicketPage() {
   const [projectData, setProjectData] = useState([]);
   const [devData, setDevData] = useState([]);
   const { token, user } = useContext(AuthContext);
-  const [loading, setLoading] = useState(false);
-  const [project, setProject] = useState();
+  const [loading, setLoading] = useState(true);
+  const [loadingDev, setLoadingDevs] = useState(true);
+  const [project, setProject] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [developer, setDeveloper] = useState("");
@@ -38,7 +39,7 @@ export default function SubmitTicketPage() {
   const getDevelopers = async (id) => {
     const dev = await myFetchGet("tickets/submit/devs?projectId=" + id, token);
     setDevData(dev);
-    setLoading(true);
+    setLoadingDevs(false);
   };
 
   const handleSubmit = async (e) => {
@@ -63,6 +64,7 @@ export default function SubmitTicketPage() {
     const getData = async () => {
       const projects = await myFetchGet("tickets/submit/projects", token);
       setProjectData(projects);
+      setLoading(false);
     };
 
     getData();
@@ -99,7 +101,7 @@ export default function SubmitTicketPage() {
           </Select>
         </FormControl>
       </Paper>
-      {loading && (
+      {!loadingDev && (
         <Paper elevation={2} sx={{ p: 2 }}>
           <Typography sx={{ textAlign: "left", mb: 1 }} variant="h5">
             Submit Ticket

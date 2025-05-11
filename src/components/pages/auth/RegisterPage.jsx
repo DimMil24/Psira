@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Container,
   TextField,
@@ -7,29 +7,58 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { useNavigate } from "react-router";
-import { AuthContext } from "../../../auth/AuthProvider";
+import { Link, useNavigate } from "react-router";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-  const { register } = useContext(AuthContext);
+
+  useEffect(() => {
+    if (success) setTimeout(() => navigate("/login"), 1000);
+  }, [success, navigate]);
+
+  const register = async (email, firstname, lastname, password, role) => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/auth/register/" + role,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            firstName: firstname,
+            lastName: lastname,
+            password: password,
+          }),
+        }
+      );
+      if (!response.ok) {
+        setError("Register Error");
+        setEmail("");
+        setFirstname("");
+        setLastname("");
+        setPassword("");
+        return;
+      }
+      setSuccess(true);
+      setSuccessMessage("Register Successfull. Redirecting...");
+    } catch (error) {
+      console.error("Registration failed", error);
+    }
+  };
 
   const handleSubmit = async (e, role) => {
     e.preventDefault();
-    try {
-      await register(email, firstname, lastname, password, role);
-      setSuccess("Registration successful! Redirecting...");
-      setTimeout(() => navigate("/login"), 300);
-    } catch (err) {
-      console.log(err);
-      setError("Registration failed. Try again.");
-    }
+    await register(email, firstname, lastname, password, role);
   };
 
   return (
@@ -39,7 +68,7 @@ const RegisterPage = () => {
           Register
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
-        {success && <Alert severity="success">{success}</Alert>}
+        {success && <Alert severity="success">{successMessage}</Alert>}
         <form>
           <TextField
             label="Email"
@@ -120,7 +149,7 @@ const RegisterPage = () => {
           </Button>
         </form>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Already have an account? <a href="/login">Login</a>
+          Already have an account? <Link to={"/login"}>Login</Link>
         </Typography>
       </Box>
     </Container>

@@ -7,7 +7,7 @@ import {
   Box,
   Alert,
 } from "@mui/material";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../../auth/AuthProvider";
 
 const LoginPage = () => {
@@ -91,7 +91,7 @@ const LoginPage = () => {
           </Button>
         </form>
         <Typography variant="body2" sx={{ mt: 2 }}>
-          Do not have an account? <a href="/register">Register</a>
+          Do not have an account? <Link to={"/register"}>Register</Link>
         </Typography>
       </Box>
     </Container>
