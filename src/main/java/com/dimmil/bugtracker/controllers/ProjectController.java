@@ -1,6 +1,5 @@
 package com.dimmil.bugtracker.controllers;
 
-import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.User;
 import com.dimmil.bugtracker.entities.requests.project.CreateProjectRequest;
 import com.dimmil.bugtracker.entities.requests.project.EditProjectRequest;
@@ -9,6 +8,7 @@ import com.dimmil.bugtracker.entities.responses.project.ProjectResponse;
 import com.dimmil.bugtracker.services.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +29,7 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @PostMapping
     public ResponseEntity<?> createProject(@AuthenticationPrincipal User user,
             @RequestBody CreateProjectRequest createProjectRequest) {
@@ -42,6 +43,7 @@ public class ProjectController {
         return ResponseEntity.ok(response);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER','DEVELOPER')")
     @PutMapping("{projectId}")
     public ResponseEntity<?> updateProject(@AuthenticationPrincipal User user,
                                            @RequestBody EditProjectRequest editProjectRequest,

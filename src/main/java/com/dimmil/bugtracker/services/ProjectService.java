@@ -3,6 +3,7 @@ package com.dimmil.bugtracker.services;
 import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.User;
 import com.dimmil.bugtracker.entities.enums.ProjectPriority;
+import com.dimmil.bugtracker.entities.enums.RoleEnum;
 import com.dimmil.bugtracker.entities.requests.project.CreateProjectRequest;
 import com.dimmil.bugtracker.entities.requests.project.EditProjectRequest;
 import com.dimmil.bugtracker.entities.responses.project.ProjectNameResponse;
@@ -72,7 +73,12 @@ public class ProjectService {
     }
 
     public List<ProjectPreviewResponse> getAllProjectsWithUserNameOnly(User user) {
-        var projects = projectRepository.getProjectsThatUserIsPartOf(user.getId());
+        List<Project> projects;
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            projects = projectRepository.getProjectsAdmin();
+        } else {
+            projects = projectRepository.getProjectsThatUserIsPartOf(user.getId());
+        }
         List<ProjectPreviewResponse> response = new ArrayList<>();
         for (Project project : projects) {
             var users = userService.getTop3UsersofProject(project.getId());
@@ -145,6 +151,10 @@ public class ProjectService {
 
     public Long getNumberOfProjectsThatUserIsPartOf(User user) {
         return projectRepository.countProjects(user.getId());
+    }
+
+    public Long getNumberOfProjectsAdmin() {
+        return projectRepository.countProjectsAdmin();
     }
 
     public List<projectCountByPriority> getProjectsCountByPriority(Long userId) {

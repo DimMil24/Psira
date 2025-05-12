@@ -2,6 +2,7 @@ package com.dimmil.bugtracker.services;
 
 import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.User;
+import com.dimmil.bugtracker.entities.enums.RoleEnum;
 import com.dimmil.bugtracker.entities.enums.TicketStatus;
 import com.dimmil.bugtracker.entities.responses.dashboard.*;
 import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
@@ -23,7 +24,12 @@ public class DashboardService {
     private final TicketService ticketService;
 
     public DashboardResponse getDashboard(User user) {
-        var totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
+        Long totalProjects;
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            totalProjects = projectService.getNumberOfProjectsAdmin();
+        } else {
+            totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
+        }
         var totalTickets = ticketRepository.countTicketsByStatus(user.getId());
 
         long openTickets = 0;
