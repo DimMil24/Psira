@@ -38,6 +38,8 @@ export default function MyTicketsPage() {
 
   return loading ? (
     <Loading loadingProp={loading} />
+  ) : data.length === 0 ? (
+    <Typography variant="h6">No Tickets</Typography>
   ) : (
     <Paper elevation={2}>
       <List>
