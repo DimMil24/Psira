@@ -74,20 +74,29 @@ export default function DashboardLayout() {
         </Box>
         <Box sx={{ overflow: "auto" }}>
           <List>
-            {projectTabs.map((entry, index) => (
-              <ListItem key={entry.label} disablePadding>
-                <ListItemButton
-                  selected={amISelected(entry.link)}
-                  component={Link}
-                  to={entry.link}
-                >
-                  <ListItemIcon>
-                    {index % 2 === 0 ? <MoveToInbox /> : <Mail />}
-                  </ListItemIcon>
-                  <ListItemText primary={entry.label} />
-                </ListItemButton>
-              </ListItem>
-            ))}
+            {projectTabs.map((entry, index) => {
+              if (
+                (user?.role === "ROLE_SUBMITTER" ||
+                  user?.role === "ROLE_DEVELOPER") &&
+                entry.managersOnly
+              ) {
+                return;
+              }
+              return (
+                <ListItem key={entry.label} disablePadding>
+                  <ListItemButton
+                    selected={amISelected(entry.link)}
+                    component={Link}
+                    to={entry.link}
+                  >
+                    <ListItemIcon>
+                      {index % 2 === 0 ? <MoveToInbox /> : <Mail />}
+                    </ListItemIcon>
+                    <ListItemText primary={entry.label} />
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
           </List>
           <Divider />
           <List>

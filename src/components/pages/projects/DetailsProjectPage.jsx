@@ -32,14 +32,15 @@ const DetailsProjectPage = () => {
   let navigate = useNavigate();
   let { project_id } = useParams();
   const [data, setData] = useState([]);
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
-    console.log(newValue);
     setValue(newValue);
   };
+
+  console.log(user);
 
   function TicketTable() {
     let ticketData;
@@ -262,16 +263,18 @@ const DetailsProjectPage = () => {
         </Box>
       </Paper>
 
-      <Box display="flex" flexDirection="row-reverse">
-        <Button color="error">
-          <DeleteIcon />
-          <Typography variant="body2">DELETE</Typography>
-        </Button>
-        <Button color="inherit" onClick={() => navigate("edit")}>
-          <EditIcon />
-          <Typography variant="body2">EDIT</Typography>
-        </Button>
-      </Box>
+      {user?.role !== "ROLE_SUBMITTER" && user?.role !== "ROLE_DEVELOPER" && (
+        <Box display="flex" flexDirection="row-reverse">
+          <Button color="error">
+            <DeleteIcon />
+            <Typography variant="body2">DELETE</Typography>
+          </Button>
+          <Button color="inherit" onClick={() => navigate("edit")}>
+            <EditIcon />
+            <Typography variant="body2">EDIT</Typography>
+          </Button>
+        </Box>
+      )}
     </Stack>
   );
 };

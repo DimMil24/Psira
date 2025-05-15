@@ -106,6 +106,7 @@ export default function CreateProjectPage() {
               variant="outlined"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              required
             />
           </Grid>
           <Grid size={12}>
@@ -118,6 +119,7 @@ export default function CreateProjectPage() {
               fullWidth
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
             />
           </Grid>
 

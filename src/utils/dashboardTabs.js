@@ -6,6 +6,7 @@ export const projectTabs = [
   {
     label: "Create Project",
     link: "/projects/create",
+    managersOnly: true,
   },
 ];
 export const ticketTabs = [
