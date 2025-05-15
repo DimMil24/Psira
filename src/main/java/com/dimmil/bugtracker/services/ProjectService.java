@@ -154,12 +154,12 @@ public class ProjectService {
                 .build();
     }
 
-    public Long getNumberOfProjectsThatUserIsPartOf(User user) {
-        return projectRepository.countProjects(user.getId());
-    }
-
-    public Long getNumberOfProjectsAdmin() {
-        return projectRepository.countProjectsAdmin();
+    public Long getNumberOfProjects(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return projectRepository.countProjectsAdmin();
+        } else {
+            return projectRepository.countProjects(user.getId());
+        }
     }
 
     public List<projectCountByPriority> getProjectsCountByPriority(User user) {

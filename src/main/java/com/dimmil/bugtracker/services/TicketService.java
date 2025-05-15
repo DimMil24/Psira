@@ -12,7 +12,9 @@ import com.dimmil.bugtracker.entities.responses.ticket.*;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
 import com.dimmil.bugtracker.exceptions.ticket.TicketNotFoundException;
+import com.dimmil.bugtracker.projections.dashboard.ticketCountByPriority;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByProject;
+import com.dimmil.bugtracker.projections.dashboard.ticketCountByStatus;
 import com.dimmil.bugtracker.repositories.HistoryRepository;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.TicketRepository;
@@ -341,6 +343,22 @@ public class TicketService {
             return ticketRepository.countTicketsByProjectAdmin();
         } else {
             return ticketRepository.countTicketsByProject(user.getId());
+        }
+    }
+
+    public List<ticketCountByStatus> countTicketsByStatus(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return ticketRepository.countTicketsByStatusAdmin();
+        } else {
+            return ticketRepository.countTicketsByStatus(user.getId());
+        }
+    }
+
+    public List<ticketCountByPriority> countTicketsByPriority(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return ticketRepository.countTicketsByPriorityAdmin();
+        } else {
+            return ticketRepository.countTicketsByPriority(user.getId());
         }
     }
 

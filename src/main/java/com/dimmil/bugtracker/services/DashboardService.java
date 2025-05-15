@@ -2,14 +2,12 @@ package com.dimmil.bugtracker.services;
 
 import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.User;
-import com.dimmil.bugtracker.entities.enums.RoleEnum;
 import com.dimmil.bugtracker.entities.enums.TicketStatus;
 import com.dimmil.bugtracker.entities.responses.dashboard.*;
 import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByPriority;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByProject;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByStatus;
-import com.dimmil.bugtracker.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,25 +18,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DashboardService {
     private final ProjectService projectService;
-    private final TicketRepository ticketRepository;
     private final TicketService ticketService;
 
-//TODO:Refactor code so there is no TicketRepository
     public DashboardResponse getDashboard(User user) {
         long openTickets = 0;
         long closedTickets = 0;
-        Long totalProjects;
-        List<ticketCountByStatus> totalTickets;
-        List<ticketCountByPriority> ticketsByPriority;
-        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
-            totalProjects = projectService.getNumberOfProjectsAdmin();
-            totalTickets = ticketRepository.countTicketsByStatusAdmin();
-            ticketsByPriority = ticketRepository.countTicketsByPriorityAdmin();
-        } else {
-            totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
-            totalTickets = ticketRepository.countTicketsByStatus(user.getId());
-            ticketsByPriority = ticketRepository.countTicketsByPriority(user.getId());
-        }
+        Long totalProjects = projectService.getNumberOfProjects(user);
+        List<ticketCountByStatus> totalTickets = ticketService.countTicketsByStatus(user);
+        List<ticketCountByPriority> ticketsByPriority = ticketService.countTicketsByPriority(user);
 
         List<TicketNumberByStatusResponse> ticketsByStatus = new ArrayList<>();
         for (ticketCountByStatus c : totalTickets) {
