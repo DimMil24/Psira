@@ -17,6 +17,7 @@ import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +37,7 @@ public class ProjectService {
     private final TicketService ticketService;
 
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @Transactional
     public void createProject(CreateProjectRequest createProjectRequest, Long owner_id) {
         User owner = userService.findById(owner_id);
@@ -180,6 +182,7 @@ public class ProjectService {
         }
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @Transactional
     public void updateProject(EditProjectRequest editProjectRequest, User user, UUID projectId) {
         Project project = projectRepository.findById(projectId).orElseThrow(
