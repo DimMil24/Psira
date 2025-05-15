@@ -57,8 +57,13 @@ public class ProjectService {
 
     }
 
-    public List<ProjectNameResponse> getProjectsThatUserIsPartOf(long user_id) {
-        var queryData = projectRepository.getProjectsThatUserIsPartOf(user_id);
+    public List<ProjectNameResponse> getProjectsThatUserIsPartOf(User user) {
+        List<Project> queryData;
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            queryData = projectRepository.getProjectsAdmin();
+        } else {
+            queryData = projectRepository.getProjectsThatUserIsPartOf(user.getId());
+        }
         var response = new ArrayList<ProjectNameResponse>();
 
         for (var project : queryData) {
@@ -157,14 +162,22 @@ public class ProjectService {
         return projectRepository.countProjectsAdmin();
     }
 
-    public List<projectCountByPriority> getProjectsCountByPriority(Long userId) {
-        return projectRepository.countProjectsByPriority(userId);
+    public List<projectCountByPriority> getProjectsCountByPriority(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return projectRepository.countProjectsByPriorityAdmin();
+        } else {
+            return projectRepository.countProjectsByPriority(user.getId());
+        }
     }
 
-    public List<Project> get5ProjectsWithDeadlineClose(Long userId) {
+    public List<Project> get5ProjectsWithDeadlineClose(User user) {
         LocalDate today = LocalDate.now();
         LocalDate nextMonth = today.plusMonths(1);
-        return projectRepository.getProjectsWithDeadlineClose(userId,today,nextMonth, Limit.of(5));
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return projectRepository.getProjectsWithDeadlineCloseAdmin(today,nextMonth, Limit.of(5));
+        } else {
+            return projectRepository.getProjectsWithDeadlineClose(user.getId(),today,nextMonth, Limit.of(5));
+        }
     }
 
     @Transactional

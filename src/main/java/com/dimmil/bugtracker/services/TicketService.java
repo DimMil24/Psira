@@ -4,10 +4,7 @@ import com.dimmil.bugtracker.entities.History;
 import com.dimmil.bugtracker.entities.Project;
 import com.dimmil.bugtracker.entities.Ticket;
 import com.dimmil.bugtracker.entities.User;
-import com.dimmil.bugtracker.entities.enums.HistoryEnum;
-import com.dimmil.bugtracker.entities.enums.TicketPriority;
-import com.dimmil.bugtracker.entities.enums.TicketStatus;
-import com.dimmil.bugtracker.entities.enums.TicketType;
+import com.dimmil.bugtracker.entities.enums.*;
 import com.dimmil.bugtracker.entities.requests.ticket.CreateTicketRequest;
 import com.dimmil.bugtracker.entities.requests.ticket.UpdateTicketRequest;
 import com.dimmil.bugtracker.entities.responses.dashboard.TicketDashboardResponse;
@@ -192,35 +189,14 @@ public class TicketService {
         }
     }
 
-    public AllTicketsResponse getAllTickets(User user, boolean open) {
+    public AllTicketsResponse getAllTickets(User user, boolean open, boolean ownTickets) {
         var data = new ArrayList<TicketPreviewResponse>();
-        var list = new ArrayList<Ticket>();
-        if (open) {
-            list.addAll(ticketRepository.getAllOpenTicketsThatUserIsPartOf(user.getId()));
+        List<Ticket> list;
+        if (ownTickets) {
+            list = ticketRepository.getUserTickets(user.getId());
         } else {
-            list.addAll(ticketRepository.getAllResolvedTicketsThatUserIsPartOf(user.getId()));
+            list = getTicketsByRole(user, open);
         }
-        for (Ticket ticket : list) {
-            data.add(TicketPreviewResponse.builder()
-                    .id(ticket.getId())
-                    .name(ticket.getName())
-                    .projectId(ticket.getProject().getId().toString())
-                    .projectName(ticket.getProject().getTitle())
-                    .type(ticket.getType().getLabel())
-                    .status(ticket.getStatus().getLabel())
-                    .priority(ticket.getPriority().getLabel())
-                    .modified(ticket.getModified().format(dateTimeFormatter))
-                    .submitted(ticket.getSubmitted().getFullName())
-                    .build()
-            );
-        }
-
-        return AllTicketsResponse.builder().tickets(data).build();
-    }
-
-    public AllTicketsResponse getAllUserTickets(User user) {
-        var data = new ArrayList<TicketPreviewResponse>();
-        var list = ticketRepository.getUserTickets(user.getId());
         for (Ticket ticket : list) {
             data.add(TicketPreviewResponse.builder()
                     .id(ticket.getId())
@@ -328,8 +304,14 @@ public class TicketService {
         return ticketRepository.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
     }
 
-    public List<TicketDashboardResponse> getLast5ModifiedTickets(Long userId) {
-        List<Ticket> tickets = ticketRepository.getAllTicketsThatUserIsPartOfLimit(userId, Limit.of(5));
+    public List<TicketDashboardResponse> getLast5ModifiedTickets(User user) {
+        List<Ticket> tickets;
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            tickets = ticketRepository.getAllTicketsThatUserIsPartOfLimitAdmin( Limit.of(5));
+        }
+        else {
+            tickets = ticketRepository.getAllTicketsThatUserIsPartOfLimit(user.getId(), Limit.of(5));
+        }
         List<TicketDashboardResponse> responses = new ArrayList<>();
 
         for (Ticket ticket : tickets) {
@@ -354,7 +336,28 @@ public class TicketService {
         return responses;
     }
 
-    public List<ticketCountByProject> getTicketCountByProject(Long userId) {
-        return ticketRepository.countTicketsByProject(userId);
+    public List<ticketCountByProject> getTicketCountByProject(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return ticketRepository.countTicketsByProjectAdmin();
+        } else {
+            return ticketRepository.countTicketsByProject(user.getId());
+        }
+    }
+
+    private List<Ticket> getTicketsByRole(User user, boolean open) {
+        if (open) {
+            if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+                return ticketRepository.getAllOpenTickets();
+            } else {
+                return ticketRepository.getAllOpenTicketsThatUserIsPartOf(user.getId());
+            }
+        } else {
+            if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+                return ticketRepository.getAllResolvedTickets();
+            } else {
+                return ticketRepository.getAllResolvedTicketsThatUserIsPartOf(user.getId());
+            }
+        }
+
     }
 }

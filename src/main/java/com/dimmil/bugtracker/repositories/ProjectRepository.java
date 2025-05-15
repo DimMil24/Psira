@@ -24,6 +24,9 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     @Query("select p from Project p join p.users pu where pu.id = :userId and p.deadline BETWEEN :today AND :nextMonth ORDER BY p.deadline ASC")
     List<Project> getProjectsWithDeadlineClose(@Param("userId") Long userId, @Param("today") LocalDate today, @Param("nextMonth") LocalDate nextMonth, Limit limit);
 
+    @Query("select p from Project p where p.deadline BETWEEN :today AND :nextMonth ORDER BY p.deadline ASC")
+    List<Project> getProjectsWithDeadlineCloseAdmin(@Param("today") LocalDate today, @Param("nextMonth") LocalDate nextMonth, Limit limit);
+
     @Query("select count(p) from Project p join p.users pu where pu.id = :userId")
     Long countProjects(@Param("userId") Long userId);
 
@@ -32,4 +35,7 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
 
     @Query("select count(p) as count, p.priority as priority from Project p join p.users pu where pu.id = :userId group by  p.priority")
     List<projectCountByPriority> countProjectsByPriority(@Param("userId") Long userId);
+
+    @Query("select count(p) as count, p.priority as priority from Project p group by  p.priority")
+    List<projectCountByPriority> countProjectsByPriorityAdmin();
 }

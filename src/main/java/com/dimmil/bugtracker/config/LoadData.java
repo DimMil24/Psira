@@ -74,7 +74,16 @@ public class LoadData {
                     .role(RoleEnum.ROLE_MANAGER)
                     .build();
 
-            userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
+            var user6 = User.builder()
+                    .email("testadmin")
+                    .password(passwordEncoder.encode("123"))
+                    .firstName("Lonely")
+                    .lastName("Admin")
+                    .role(RoleEnum.ROLE_ADMIN)
+                    .build();
+
+
+            userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6));
 
             var project1 = Project.builder()
                     .title("Project 1")

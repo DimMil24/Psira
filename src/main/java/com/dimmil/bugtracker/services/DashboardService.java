@@ -23,17 +23,22 @@ public class DashboardService {
     private final TicketRepository ticketRepository;
     private final TicketService ticketService;
 
+//TODO:Refactor code so there is no TicketRepository
     public DashboardResponse getDashboard(User user) {
-        Long totalProjects;
-        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
-            totalProjects = projectService.getNumberOfProjectsAdmin();
-        } else {
-            totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
-        }
-        var totalTickets = ticketRepository.countTicketsByStatus(user.getId());
-
         long openTickets = 0;
         long closedTickets = 0;
+        Long totalProjects;
+        List<ticketCountByStatus> totalTickets;
+        List<ticketCountByPriority> ticketsByPriority;
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            totalProjects = projectService.getNumberOfProjectsAdmin();
+            totalTickets = ticketRepository.countTicketsByStatusAdmin();
+            ticketsByPriority = ticketRepository.countTicketsByPriorityAdmin();
+        } else {
+            totalProjects = projectService.getNumberOfProjectsThatUserIsPartOf(user);
+            totalTickets = ticketRepository.countTicketsByStatus(user.getId());
+            ticketsByPriority = ticketRepository.countTicketsByPriority(user.getId());
+        }
 
         List<TicketNumberByStatusResponse> ticketsByStatus = new ArrayList<>();
         for (ticketCountByStatus c : totalTickets) {
@@ -51,7 +56,6 @@ public class DashboardService {
             }
         }
 
-        var ticketsByPriority = ticketRepository.countTicketsByPriority(user.getId());
         List<TicketNumberByPriorityResponse> priorityTickets = new ArrayList<>();
         for (ticketCountByPriority tc : ticketsByPriority) {
             priorityTickets.add(
@@ -63,9 +67,9 @@ public class DashboardService {
             );
         }
 
-        var recentTickets = ticketService.getLast5ModifiedTickets(user.getId());
+        var recentTickets = ticketService.getLast5ModifiedTickets(user);
 
-        var upcomingDeadlineProjects = projectService.get5ProjectsWithDeadlineClose(user.getId());
+        var upcomingDeadlineProjects = projectService.get5ProjectsWithDeadlineClose(user);
         List<ProjectDeadlineResponse> deadlineProjects = new ArrayList<>();
         for (Project p : upcomingDeadlineProjects) {
             deadlineProjects.add(
@@ -79,7 +83,7 @@ public class DashboardService {
             );
         }
 
-        var projectNumberByPriority = projectService.getProjectsCountByPriority(user.getId());
+        var projectNumberByPriority = projectService.getProjectsCountByPriority(user);
         List<ProjectNumberByPriorityResponse> projectNumberByPriorityResponse = new ArrayList<>();
         for (projectCountByPriority p : projectNumberByPriority) {
             projectNumberByPriorityResponse.add(
@@ -91,7 +95,7 @@ public class DashboardService {
             );
         }
 
-        var ticketsByProject = ticketService.getTicketCountByProject(user.getId());
+        var ticketsByProject = ticketService.getTicketCountByProject(user);
         List<TicketCountByProjectResponse> ticketCountByProjectResponse = new ArrayList<>();
         for (ticketCountByProject p : ticketsByProject) {
             ticketCountByProjectResponse.add(

@@ -36,19 +36,19 @@ public class TicketController {
 
     @GetMapping("/open")
     public ResponseEntity<?> getOpenTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllTickets(user,true);
+        var response = ticketService.getAllTickets(user,true,false);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/resolved")
     public ResponseEntity<?> getResolvedTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllTickets(user,false);
+        var response = ticketService.getAllTickets(user,false,false);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/own")
     public ResponseEntity<?> getUserTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllUserTickets(user);
+        var response = ticketService.getAllTickets(user,false, true);
         return ResponseEntity.ok(response);
     }
 
@@ -70,7 +70,7 @@ public class TicketController {
 
     @GetMapping("/submit/projects")
     public ResponseEntity<List<ProjectNameResponse>> getProjectData(@AuthenticationPrincipal User user) {
-        var projects = projectService.getProjectsThatUserIsPartOf(user.getId());
+        var projects = projectService.getProjectsThatUserIsPartOf(user);
         return ResponseEntity.ok(projects);
     }
 

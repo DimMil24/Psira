@@ -35,18 +35,36 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query("select t.status as status,count(t) as count from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) group by t.status")
     List<ticketCountByStatus> countTicketsByStatus(@Param("userId") Long userId);
 
+    @Query("select t.status as status,count(t) as count from Ticket t group by t.status")
+    List<ticketCountByStatus> countTicketsByStatusAdmin();
+
     @Query("select t.priority as priority,count(t) as count from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) group by t.priority")
     List<ticketCountByPriority> countTicketsByPriority(@Param("userId") Long userId);
+
+    @Query("select t.priority as priority,count(t) as count from Ticket t group by t.priority")
+    List<ticketCountByPriority> countTicketsByPriorityAdmin();
 
     @Query("select t.project.title as name,count(t) as count from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) group by t.project.title")
     List<ticketCountByProject> countTicketsByProject(@Param("userId") Long userId);
 
+    @Query("select t.project.title as name,count(t) as count from Ticket t group by t.project.title")
+    List<ticketCountByProject> countTicketsByProjectAdmin();
+
     @Query("select t from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) order by t.modified desc ")
     List<Ticket> getAllTicketsThatUserIsPartOfLimit(@Param("userId") Long userId, Limit limit);
+
+    @Query("select t from Ticket t order by t.modified desc ")
+    List<Ticket> getAllTicketsThatUserIsPartOfLimitAdmin(Limit limit);
 
     @Query("select t from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) and t.status = 'RESOLVED' order by t.modified desc ")
     List<Ticket> getAllResolvedTicketsThatUserIsPartOf(@Param("userId") Long userId);
 
+    @Query("select t from Ticket t where t.status = 'RESOLVED' order by t.modified desc ")
+    List<Ticket> getAllResolvedTickets();
+
     @Query("select t from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) and t.status <> 'RESOLVED' order by t.modified desc ")
     List<Ticket> getAllOpenTicketsThatUserIsPartOf(@Param("userId") Long userId);
+
+    @Query("select t from Ticket t where t.status <> 'RESOLVED' order by t.modified desc ")
+    List<Ticket> getAllOpenTickets();
 }
