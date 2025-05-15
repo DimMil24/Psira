@@ -46,6 +46,7 @@ const DashboardPage = () => {
                 width: "100px",
                 backgroundColor: "#29404f",
                 borderRadius: 1,
+                alignContent: "center",
               }}
             >
               <Typography color="white" variant="h6">
@@ -72,6 +73,7 @@ const DashboardPage = () => {
                 width: "100px",
                 backgroundColor: "#29404f",
                 borderRadius: 1,
+                alignContent: "center",
               }}
             >
               <Typography color="white" variant="h6">
@@ -98,6 +100,7 @@ const DashboardPage = () => {
                 width: "100px",
                 backgroundColor: "#2395f4",
                 borderRadius: 1,
+                alignContent: "center",
               }}
             >
               <Typography color="white" variant="h6">
@@ -124,6 +127,7 @@ const DashboardPage = () => {
                 width: "100px",
                 backgroundColor: "#00c853",
                 borderRadius: 1,
+                alignContent: "center",
               }}
             >
               <Typography color="white" variant="h6">
