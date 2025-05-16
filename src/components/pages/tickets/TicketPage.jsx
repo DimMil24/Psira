@@ -34,6 +34,7 @@ const TicketPage = () => {
   const { token, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [comment, setComment] = useState("");
+  const [commentSubmitted, setCommentSubmitted] = useState(false);
   let navigate = useNavigate();
 
   const handleCommentSend = async () => {
@@ -43,6 +44,7 @@ const TicketPage = () => {
         ticketId: ticket_id,
       });
       setComment("");
+      setCommentSubmitted(!commentSubmitted);
     } catch (err) {
       console.log(err);
     }
@@ -65,7 +67,7 @@ const TicketPage = () => {
 
     getData();
     getCommentData();
-  }, [token, ticket_id, project_id]);
+  }, [token, ticket_id, project_id, commentSubmitted]);
 
   return loading ? (
     <Loading loadingProp={loading} />
