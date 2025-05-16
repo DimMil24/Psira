@@ -23,4 +23,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User>getAllUsersExceptOwner(@Param("projectId") UUID projectId);
 
     Optional<User> findByEmail(String email);
+
+    @Query("select case when count(u)>0 then true else false end from Project p join p.users u where p.id = :projectId and u.id =:userId")
+    boolean isUserInProject(@Param("projectId") UUID projectId, @Param("userId") Long userId);
 }

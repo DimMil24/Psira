@@ -12,6 +12,7 @@ import com.dimmil.bugtracker.entities.responses.project.ProjectResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserNameResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
+import com.dimmil.bugtracker.exceptions.user.UserActionForbiddenException;
 import com.dimmil.bugtracker.projections.dashboard.projectCountByPriority;
 import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.UserRepository;
@@ -119,7 +120,12 @@ public class ProjectService {
         return response;
     }
 
-    public ProjectResponse getProjectById(UUID projectId) {
+    public ProjectResponse getProjectById(User user,UUID projectId) {
+
+        if (!userService.isUserInProject(projectId, user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
+
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException(projectId));
 
@@ -130,13 +136,13 @@ public class ProjectService {
                 .build();
 
         List<UserResponse> userResponse = new ArrayList<>();
-        for (User user : project.getUsers()) {
-            if (user.getId().equals(owner.getId())) continue;
+        for (User u : project.getUsers()) {
+            if (u.getId().equals(owner.getId())) continue;
             userResponse.add(
                     UserResponse.builder()
-                            .id(user.getId())
-                            .fullName(user.getFullName())
-                            .role(user.getRole().name())
+                            .id(u.getId())
+                            .fullName(u.getFullName())
+                            .role(u.getRole().name())
                             .build()
             );
         }
@@ -185,10 +191,14 @@ public class ProjectService {
     @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @Transactional
     public void updateProject(EditProjectRequest editProjectRequest, User user, UUID projectId) {
+
+        if (!userService.isUserInProject(projectId, user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
+
         Project project = projectRepository.findById(projectId).orElseThrow(
                 () -> new ProjectNotFoundException(projectId));
 
-        //TODO: Check if user can update Project
         User owner = userService.findById(editProjectRequest.getOwnerId());
 
         //TODO: Check if removing developer with assigned tickets.

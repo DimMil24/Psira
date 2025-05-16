@@ -12,6 +12,7 @@ import com.dimmil.bugtracker.entities.responses.ticket.*;
 import com.dimmil.bugtracker.entities.responses.user.UserResponse;
 import com.dimmil.bugtracker.exceptions.project.ProjectNotFoundException;
 import com.dimmil.bugtracker.exceptions.ticket.TicketNotFoundException;
+import com.dimmil.bugtracker.exceptions.user.UserActionForbiddenException;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByPriority;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByProject;
 import com.dimmil.bugtracker.projections.dashboard.ticketCountByStatus;
@@ -87,7 +88,11 @@ public class TicketService {
         var ticket = ticketRepository.getTicketByIdAndProjectId(ticketId, projectId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));
 
-        //Add exception here if not dev and in Project.
+        //Check if user is in project or if he is admin
+        if (!userService.isUserInProject(projectId, user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
+
         User dev = null;
         if (updateTicket.getDeveloperId() != -1) {
             dev = userService.findById(updateTicket.getDeveloperId());
@@ -163,7 +168,13 @@ public class TicketService {
             historyList.add(history);
         }
 
+
+        //Don't allow submitter to modify developers
         if (ticket.getAssigned() != dev) {
+
+            if (user.getRole() == RoleEnum.ROLE_SUBMITTER) {
+                throw new UserActionForbiddenException();
+            }
 
             String from = null;
             if (ticket.getAssigned() != null) {
@@ -256,6 +267,11 @@ public class TicketService {
     }
 
     public TicketResponse getTicket(User user, UUID projectId, Long ticketId) {
+
+        if (!userService.isUserInProject(projectId, user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
+
         Ticket ticket = ticketRepository.getTicketByIdAndProjectId(ticketId, projectId)
                 .orElseThrow(() -> new TicketNotFoundException(ticketId));
 

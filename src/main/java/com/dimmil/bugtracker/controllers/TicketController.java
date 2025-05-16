@@ -4,7 +4,6 @@ import com.dimmil.bugtracker.entities.User;
 import com.dimmil.bugtracker.entities.requests.ticket.CreateTicketRequest;
 import com.dimmil.bugtracker.entities.requests.ticket.UpdateTicketRequest;
 import com.dimmil.bugtracker.entities.responses.project.ProjectNameResponse;
-import com.dimmil.bugtracker.entities.responses.ticket.TicketSubmitPageResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserNameResponse;
 import com.dimmil.bugtracker.services.ProjectService;
 import com.dimmil.bugtracker.services.TicketService;

@@ -2,9 +2,11 @@ package com.dimmil.bugtracker.services;
 
 import com.dimmil.bugtracker.entities.Comment;
 import com.dimmil.bugtracker.entities.User;
+import com.dimmil.bugtracker.entities.enums.RoleEnum;
 import com.dimmil.bugtracker.entities.requests.comment.CreateCommentRequest;
 import com.dimmil.bugtracker.entities.responses.comment.CommentResponse;
 import com.dimmil.bugtracker.entities.responses.user.UserNameResponse;
+import com.dimmil.bugtracker.exceptions.user.UserActionForbiddenException;
 import com.dimmil.bugtracker.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,10 +23,15 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final TicketService ticketService;
     private final DateTimeFormatter dateTimeFormatterShort;
+    private final UserService userService;
 
     public void addComment(CreateCommentRequest comment, User user) {
-        //TODO: Secure if user can comment on project
+
         var ticket = ticketService.getTicketById(comment.getTicketId());
+
+        if (!userService.isUserInProject(ticket.getProject().getId(), user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
 
         var newComment = Comment.builder()
                 .text(comment.getComment())

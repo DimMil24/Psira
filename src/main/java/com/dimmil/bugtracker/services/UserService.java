@@ -65,4 +65,8 @@ public class UserService {
         return userRepository.getDevsInProject(projectId);
     }
 
+    public boolean isUserInProject(UUID projectId, Long userId) {
+        return userRepository.isUserInProject(projectId, userId);
+    }
+
 }
