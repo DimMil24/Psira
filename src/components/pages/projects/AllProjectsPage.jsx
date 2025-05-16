@@ -85,8 +85,13 @@ const AllProjectsPage = () => {
                   color={getColorPriority(p.priority)}
                   variant="filled"
                 />
-                <Button variant="text">
-                  <Link to={"/projects/" + p.id}>Details</Link>
+                <Button variant="contained">
+                  <Link
+                    style={{ textDecoration: "none", color: "#FFFFFF" }}
+                    to={"/projects/" + p.id}
+                  >
+                    Details
+                  </Link>
                 </Button>
               </Box>
             </Box>

@@ -30,11 +30,16 @@ export default function SubmitTicketPage() {
   const [project, setProject] = useState("");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [developer, setDeveloper] = useState("");
+  const [developer, setDeveloper] = useState("-1");
   const [status, setStatus] = useState(ticketStatusSubmit[0].label);
   const [priority, setPriority] = useState(priorities[0].label);
   const [type, setType] = useState(ticketType[0].label);
   const navigate = useNavigate();
+  let submitterProp = false;
+
+  if (user?.role === "ROLE_SUBMITTER") {
+    submitterProp = true;
+  }
 
   const getDevelopers = async (id) => {
     const dev = await myFetchGet("tickets/submit/devs?projectId=" + id, token);
@@ -168,6 +173,7 @@ export default function SubmitTicketPage() {
                   onChange={(e) => setDeveloper(e.target.value)}
                   fullWidth
                   required
+                  disabled={submitterProp}
                   sx={{ textAlign: "left" }}
                 >
                   <MenuItem value="-1">Unassigned</MenuItem>

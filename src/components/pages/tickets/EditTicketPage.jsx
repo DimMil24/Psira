@@ -21,7 +21,7 @@ import Loading from "../../Loading";
 export default function EditTicketPage() {
   const [ticketData, setTicketData] = useState();
   const [devData, setDevData] = useState([]);
-  const { token } = useContext(AuthContext);
+  const { token, user } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -31,6 +31,11 @@ export default function EditTicketPage() {
   const [type, setType] = useState(ticketType[0].label);
   const navigate = useNavigate();
   let { project_id, ticket_id } = useParams();
+  let submitterProp = false;
+
+  if (user?.role === "ROLE_SUBMITTER") {
+    submitterProp = true;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -147,6 +152,7 @@ export default function EditTicketPage() {
                 onChange={(e) => setDeveloper(e.target.value)}
                 fullWidth
                 required
+                disabled={submitterProp}
                 sx={{ textAlign: "left" }}
               >
                 <MenuItem value="-1">Unassigned</MenuItem>
