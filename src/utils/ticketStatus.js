@@ -1,4 +1,4 @@
-const ticketStatus = [
+export const ticketStatus = [
   {
     label: "New",
     color: "primary",
@@ -17,4 +17,9 @@ const ticketStatus = [
   },
 ];
 
-export default ticketStatus;
+export const ticketStatusSubmit = [
+  {
+    label: "New",
+    color: "primary",
+  },
+];

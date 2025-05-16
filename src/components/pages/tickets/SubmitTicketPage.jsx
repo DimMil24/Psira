@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import priorities from "../../../utils/priorities";
 import ticketType from "../../../utils/ticketTypes";
-import ticketStatus from "../../../utils/ticketStatus";
+import { ticketStatusSubmit } from "../../../utils/ticketStatus";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthProvider";
 import { myFetchGet, myFetchPost } from "../../../utils/fetchUtils";
@@ -31,7 +31,7 @@ export default function SubmitTicketPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [developer, setDeveloper] = useState("");
-  const [status, setStatus] = useState(ticketStatus[0].label);
+  const [status, setStatus] = useState(ticketStatusSubmit[0].label);
   const [priority, setPriority] = useState(priorities[0].label);
   const [type, setType] = useState(ticketType[0].label);
   const navigate = useNavigate();
@@ -143,7 +143,7 @@ export default function SubmitTicketPage() {
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
                 >
-                  {ticketStatus.map((ticket) => (
+                  {ticketStatusSubmit.map((ticket) => (
                     <MenuItem key={ticket.label} value={ticket.label}>
                       <Chip label={ticket.label} color={ticket.color} />
                     </MenuItem>

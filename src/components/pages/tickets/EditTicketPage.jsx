@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import priorities from "../../../utils/priorities";
 import ticketType from "../../../utils/ticketTypes";
-import ticketStatus from "../../../utils/ticketStatus";
+import { ticketStatus } from "../../../utils/ticketStatus";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../auth/AuthProvider";
 import { myFetchGet, myFetchPut } from "../../../utils/fetchUtils";
