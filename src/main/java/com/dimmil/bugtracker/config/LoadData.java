@@ -10,7 +10,6 @@ import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.TicketRepository;
 import com.dimmil.bugtracker.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +29,8 @@ public class LoadData {
     private final TicketRepository ticketRepository;
     private final HistoryRepository historyRepository;
 
+
+    //This function seeds data for testing.
     @Transactional
     public void run() {
         if (userRepository.count() == 0) {
@@ -37,59 +38,50 @@ public class LoadData {
             var user1 = User.builder()
                     .email("admin")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Admin")
-                    .lastName("Test")
+                    .firstName("Dimitris")
+                    .lastName("Milios")
                     .role(RoleEnum.ROLE_ADMIN)
                     .build();
 
             var user2 = User.builder()
                     .email("submitter")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Submitter")
-                    .lastName("Test")
+                    .firstName("Tassos")
+                    .lastName("Anastasiou")
                     .role(RoleEnum.ROLE_SUBMITTER)
                     .build();
 
             var user3 = User.builder()
                     .email("developer")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Developer")
-                    .lastName("Test")
+                    .firstName("Eleni")
+                    .lastName("Antoniou")
                     .role(RoleEnum.ROLE_DEVELOPER)
                     .build();
 
             var user4 = User.builder()
                     .email("developer2")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Developer2")
-                    .lastName("Test2")
+                    .firstName("Nikolas")
+                    .lastName("Nikolaou")
                     .role(RoleEnum.ROLE_DEVELOPER)
                     .build();
 
             var user5 = User.builder()
                     .email("manager")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Manager")
-                    .lastName("Test")
+                    .firstName("Stavrianna")
+                    .lastName("Kostakou")
                     .role(RoleEnum.ROLE_MANAGER)
                     .build();
 
-            var user6 = User.builder()
-                    .email("testadmin")
-                    .password(passwordEncoder.encode("123"))
-                    .firstName("Lonely")
-                    .lastName("Admin")
-                    .role(RoleEnum.ROLE_ADMIN)
-                    .build();
 
-
-            userRepository.saveAll(List.of(user1, user2, user3, user4, user5, user6));
+            userRepository.saveAll(List.of(user1, user2, user3, user4, user5));
 
             var project1 = Project.builder()
-                    .title("Project 1")
+                    .title("Build a Portfolio Project")
                     .description(""" 
-                            EINAI ENA TEST AUTO
-                            DFSFSDFDS
+                            This is a mock description for building a portfolio project.
                             """)
                     .startDate(LocalDate.now())
                     .deadline(LocalDate.now().plusDays(30))
@@ -99,22 +91,22 @@ public class LoadData {
                     .build();
 
             var project2 = Project.builder()
-                    .title("Project 2")
+                    .title("Build a Restaurant Management Application")
                     .description(""" 
-                            TESTINGTESTINGTESTINGTESTINGTESTINGTESTINGTESTING
+                            This is a mock description for building a restaurant management application.
                             """)
                     .startDate(LocalDate.now())
                     .deadline(LocalDate.now().plusDays(40))
                     .owner(user5)
                     .users(Set.of(user1,user2, user3, user4, user5))
-                    .priority(ProjectPriority.HIGH)
+                    .priority(ProjectPriority.URGENT)
                     .build();
 
             projectRepository.saveAll(List.of(project1, project2));
 
             var ticket1 = Ticket.builder()
-                    .name("Ticket 1")
-                    .description("HMMMM")
+                    .name("Build the frontend of the Application")
+                    .description("Decide how to build the frontend of the Application.")
                     .created(LocalDateTime.of(2024,7,22,17,34))
                     .modified(LocalDateTime.of(2024,7,22,17,34))
                     .submitted(user5)
@@ -137,15 +129,15 @@ public class LoadData {
             LocalDateTime ticket2Time = LocalDateTime.now();
 
             var ticket2 = Ticket.builder()
-                    .name("Ticket 2")
-                    .description("HMMMM")
+                    .name("Build the backend of the Application")
+                    .description("This ticket tracks the development of building a backend.")
                     .created(ticket2Time)
                     .modified(ticket2Time)
                     .submitted(user5)
                     .project(project1)
                     .priority(TicketPriority.URGENT)
                     .status(TicketStatus.TESTING)
-                    .type(TicketType.ENHANCEMENT)
+                    .type(TicketType.GENERAL_TASK)
                     .assigned(user3)
                     .build();
 
@@ -161,16 +153,16 @@ public class LoadData {
             LocalDateTime ticket3Time = LocalDateTime.now().minusDays(30);
 
             var ticket3 = Ticket.builder()
-                    .name("Ticket 3")
-                    .description("aaaaaaa")
+                    .name("Implement new Reservation Feature.")
+                    .description("This feature will enable users to make reservations.")
                     .created(ticket3Time)
                     .modified(ticket3Time)
                     .submitted(user4)
                     .project(project2)
-                    .priority(TicketPriority.URGENT)
+                    .priority(TicketPriority.MEDIUM)
                     .status(TicketStatus.NEW)
                     .type(TicketType.NEW_DEVELOPMENT)
-                    .assigned(null)
+                    .assigned(user4)
                     .build();
 
             History history3 = History.builder()
@@ -185,15 +177,15 @@ public class LoadData {
             LocalDateTime ticket4Time = LocalDateTime.now().minusDays(40);
 
             var ticket4 = Ticket.builder()
-                    .name("Admin Ticket")
-                    .description("aaasgsfgsaaaa")
+                    .name("Fix incorrect Timezones when submitting new order")
+                    .description("When a user submits an order timezones are incorrectly saved to the database.")
                     .created(ticket4Time)
                     .modified(ticket4Time)
                     .submitted(user1)
                     .project(project2)
                     .priority(TicketPriority.URGENT)
-                    .status(TicketStatus.NEW)
-                    .type(TicketType.NEW_DEVELOPMENT)
+                    .status(TicketStatus.IN_DEVELOPMENT)
+                    .type(TicketType.DEFECT)
                     .assigned(null)
                     .build();
 
@@ -209,15 +201,15 @@ public class LoadData {
             LocalDateTime ticket5Time = LocalDateTime.now().minusDays(2);
 
             var ticket5 = Ticket.builder()
-                    .name("Resolved Ticket")
-                    .description("aaasgsfgsaaaa")
+                    .name("Refactor how the menu of each restaurant is fetched.")
+                    .description("The menu loading of each restaurant is slow. Consider refactoring part of the codebase.")
                     .created(ticket5Time)
                     .modified(ticket5Time)
                     .submitted(user1)
                     .project(project2)
                     .priority(TicketPriority.URGENT)
                     .status(TicketStatus.RESOLVED)
-                    .type(TicketType.NEW_DEVELOPMENT)
+                    .type(TicketType.ENHANCEMENT)
                     .assigned(null)
                     .build();
 
