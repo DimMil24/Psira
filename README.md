@@ -43,3 +43,7 @@ Any change made to a ticket, is tracked and shown in the history of the ticket.
 ![Submit Ticket Preview](assets/SubmitTicket.png)
 
 ![Ticket Details Preview](assets/ticketDetails.gif)
+
+### Diagram
+
+![Ticket Details Preview](assets/diagram.png)
