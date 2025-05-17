@@ -17,9 +17,9 @@ This repository contains the backend of the app. For the frontend click [here](h
 There are 4 roles. **Admin** , **Project Manager**, **Developer** and **Submitter**.
 <br>
 Managers create and manage projects. Developers are assigned to tickets for resolving.
-Submitters submit tickets for each project. Admins can manager everything.
+Submitters submit tickets for each project. Admins can manage everything.
 <br>
-Each user (except for the admins) can only see the projects and the tickets that he is a part of.
+Each user (except for the admins) can only see the projects and the tickets that he has been assigned to.
 
 ### Projects
 A project has a number of tickets that are being used to track its progress.
@@ -34,7 +34,7 @@ A ticket has a status which indicates the progress of the ticket, a priority and
 <br>
 Users can communicate and add comments to each ticket.
 <br>
-Any change made to a ticket is tracked and shown in the history of the ticket.
+Any change made to a ticket, is tracked and shown in the history of the ticket.
 
 ![Submit Ticket Preview](assets/SubmitTicket.png)
 
