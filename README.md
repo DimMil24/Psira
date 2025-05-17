@@ -26,9 +26,11 @@ Each user (except for the admins) can only see the projects and the tickets that
 ### Projects
 A project has a number of tickets that are being used to track its progress.
 There is also a deadline and a priority.
+
 ![Projects Preview](assets/AllProjects.png)
 <br>
 <br>
+
 ![Create Project Preview](assets/CreateProject.png)
 
 ### Tickets
