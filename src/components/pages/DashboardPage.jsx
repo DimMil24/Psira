@@ -138,7 +138,12 @@ const DashboardPage = () => {
         </Paper>
       </Grid>
       <Grid size={12}>
-        <RecentsTable rowData={data.dashboardTickets} />
+        <Paper elevation={2} sx={{ padding: 2 }}>
+          <Typography textAlign="left" variant="h6">
+            Recent Activity
+          </Typography>
+          <RecentsTable rowData={data.dashboardTickets} />
+        </Paper>
       </Grid>
       <Grid size={6}>
         <StatusChart chartData={data.statusTickets} />

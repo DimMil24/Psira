@@ -25,6 +25,8 @@ const ProjectCountChart = ({ chartData }) => {
         series={[
           {
             data: chartData,
+            highlightScope: { fade: "global", highlight: "item" },
+            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
           },
         ]}
         width={450}

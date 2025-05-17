@@ -25,6 +25,10 @@ const StatusChart = ({ chartData }) => {
         series={[
           {
             data: chartData,
+            highlightScope: { fade: "global", highlight: "item" },
+            faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
+            outerRadius: 120,
+            cx: 150,
           },
         ]}
         width={450}

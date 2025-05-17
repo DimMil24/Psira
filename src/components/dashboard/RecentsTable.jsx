@@ -5,14 +5,13 @@ import {
   TableRow,
   TableCell,
   TableBody,
-  Paper,
   Chip,
 } from "@mui/material";
 import { getColorStatus, getColorType } from "../../utils/chipUtils";
 
 const RecentsTable = ({ rowData }) => {
   return (
-    <TableContainer component={Paper}>
+    <TableContainer>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
