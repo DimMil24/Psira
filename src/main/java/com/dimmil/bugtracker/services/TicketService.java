@@ -21,6 +21,7 @@ import com.dimmil.bugtracker.repositories.ProjectRepository;
 import com.dimmil.bugtracker.repositories.TicketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Limit;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -202,15 +203,9 @@ public class TicketService {
         }
     }
 
-    public AllTicketsResponse getAllTickets(User user, boolean open, boolean ownTickets) {
+    private AllTicketsResponse mapTicketsToResponse(List<Ticket> tickets) {
         var data = new ArrayList<TicketPreviewResponse>();
-        List<Ticket> list;
-        if (ownTickets) {
-            list = ticketRepository.getUserTickets(user.getId());
-        } else {
-            list = getTicketsByRole(user, open);
-        }
-        for (Ticket ticket : list) {
+        for (Ticket ticket : tickets) {
             data.add(TicketPreviewResponse.builder()
                     .id(ticket.getId())
                     .name(ticket.getName())
@@ -224,8 +219,32 @@ public class TicketService {
                     .build()
             );
         }
-
         return AllTicketsResponse.builder().tickets(data).build();
+    }
+
+    public AllTicketsResponse getAllOpenTickets(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return mapTicketsToResponse(ticketRepository.getAllOpenTickets());
+        } else {
+            return mapTicketsToResponse(ticketRepository.getAllOpenTicketsThatUserIsPartOf(user.getId()));
+        }
+    }
+
+    public AllTicketsResponse getAllClosedTickets(User user) {
+        if (user.getRole() == RoleEnum.ROLE_ADMIN) {
+            return mapTicketsToResponse(ticketRepository.getAllResolvedTickets());
+        } else {
+            return mapTicketsToResponse(ticketRepository.getAllResolvedTicketsThatUserIsPartOf(user.getId()));
+        }
+    }
+
+    public AllTicketsResponse getAllUserTickets(User user) {
+        return mapTicketsToResponse(ticketRepository.getUserTickets(user.getId()));
+    }
+
+    @PreAuthorize("hasRole('DEVELOPER')")
+    public AllTicketsResponse getAllDevTickets(User user) {
+        return mapTicketsToResponse(ticketRepository.getAllAssignedDevTickets(user.getId()));
     }
 
     public AllTicketsByStatusResponse getAllProjectTicketsByStatus(UUID proj_id) {
@@ -387,22 +406,5 @@ public class TicketService {
         } else {
             return ticketRepository.countTicketsByPriority(user.getId());
         }
-    }
-
-    private List<Ticket> getTicketsByRole(User user, boolean open) {
-        if (open) {
-            if (user.getRole() == RoleEnum.ROLE_ADMIN) {
-                return ticketRepository.getAllOpenTickets();
-            } else {
-                return ticketRepository.getAllOpenTicketsThatUserIsPartOf(user.getId());
-            }
-        } else {
-            if (user.getRole() == RoleEnum.ROLE_ADMIN) {
-                return ticketRepository.getAllResolvedTickets();
-            } else {
-                return ticketRepository.getAllResolvedTicketsThatUserIsPartOf(user.getId());
-            }
-        }
-
     }
 }

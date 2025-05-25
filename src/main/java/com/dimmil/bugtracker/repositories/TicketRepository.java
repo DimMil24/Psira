@@ -56,6 +56,9 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     @Query("select t from Ticket t order by t.modified desc ")
     List<Ticket> getAllTicketsThatUserIsPartOfLimitAdmin(Limit limit);
 
+    @Query("select t from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) and t.assigned.id = :userId and t.status <> 'RESOLVED' order by t.modified desc ")
+    List<Ticket> getAllAssignedDevTickets(@Param("userId") Long userId);
+
     @Query("select t from Ticket t where t.project in (select p from Project p join p.users u where u.id = :userId) and t.status = 'RESOLVED' order by t.modified desc ")
     List<Ticket> getAllResolvedTicketsThatUserIsPartOf(@Param("userId") Long userId);
 

@@ -35,19 +35,25 @@ public class TicketController {
 
     @GetMapping("/open")
     public ResponseEntity<?> getOpenTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllTickets(user,true,false);
+        var response = ticketService.getAllOpenTickets(user);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/resolved")
     public ResponseEntity<?> getResolvedTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllTickets(user,false,false);
+        var response = ticketService.getAllClosedTickets(user);
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/own")
     public ResponseEntity<?> getUserTickets(@AuthenticationPrincipal User user) {
-        var response = ticketService.getAllTickets(user,false, true);
+        var response = ticketService.getAllUserTickets(user);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/dev")
+    public ResponseEntity<?> getDevTickets(@AuthenticationPrincipal User user) {
+        var response = ticketService.getAllDevTickets(user);
         return ResponseEntity.ok(response);
     }
 
