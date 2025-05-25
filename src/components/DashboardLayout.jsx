@@ -108,6 +108,20 @@ export default function DashboardLayout() {
           </List>
           <Divider />
           <List>
+            {(user?.role === "ROLE_DEVELOPER") && (
+              <ListItem key={"Create Project"} disablePadding>
+                <ListItemButton
+                  selected={amISelected("/tickets/assigned")}
+                  component={Link}
+                  to={"/tickets/assigned"}
+                >
+                  <ListItemIcon>
+                    <CreateNewFolderIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="Assigned Tickets" />
+                </ListItemButton>
+              </ListItem>
+            )}
             <ListItem key={"Open Tickets"} disablePadding>
               <ListItemButton
                 selected={amISelected("/tickets/open")}

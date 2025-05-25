@@ -19,6 +19,7 @@ import ResolvedTicketsPage from "./components/pages/tickets/ResolvedTicketsPage"
 import TicketPage from "./components/pages/tickets/TicketPage";
 import EditTicketPage from "./components/pages/tickets/EditTicketPage";
 import EditProjectPage from "./components/pages/projects/EditProjectPage";
+import AssignedTickets from "./components/pages/tickets/AssignedTickets";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
                   path="/tickets/resolved"
                   element={<ResolvedTicketsPage />}
                 />
+                <Route path="/tickets/assigned" element={<AssignedTickets />} />
                 <Route path="/tickets/own" element={<MyTicketsPage />} />
                 <Route path="/tickets/submit" element={<SubmitTicketPage />} />
                 <Route
