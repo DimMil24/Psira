@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
-import { myFetchGet, myFetchPost } from "../../../utils/fetchUtils";
+import { myFetchDelete, myFetchGet, myFetchPost } from "../../../utils/fetchUtils";
 import { AuthContext } from "../../../auth/AuthProvider";
 import { stringAvatar } from "../../../utils/avatarUtils";
 import { getRole } from "../../../utils/roleDisplayUtils";
@@ -49,6 +49,14 @@ const TicketPage = () => {
       console.log(err);
     }
   };
+
+  const handleDelete = async () => {
+      const response = await myFetchDelete(
+        "tickets/" + project_id + "/" + ticket_id,
+        token
+      )
+      navigate("projects/" + project_id)
+  }
 
   useEffect(() => {
     const getData = async () => {
@@ -341,7 +349,7 @@ const TicketPage = () => {
       </Grid>
       <Grid size={12}>
         <Box display="flex" flexDirection="row-reverse">
-          <Button color="error">
+          <Button color="error" onClick={() => handleDelete()}>
             <DeleteIcon />
             <Typography variant="body2">DELETE</Typography>
           </Button>
