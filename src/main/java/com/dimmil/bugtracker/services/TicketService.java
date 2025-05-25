@@ -318,6 +318,17 @@ public class TicketService {
                 .build();
     }
 
+    public void deleteTicket(User user, UUID projectId, Long ticketId) {
+        if (!userService.isUserInProject(projectId, user.getId()) && user.getRole() != RoleEnum.ROLE_ADMIN) {
+            throw new UserActionForbiddenException();
+        }
+
+        Ticket ticket = ticketRepository.getTicketByIdAndProjectId(ticketId, projectId)
+                .orElseThrow(() -> new TicketNotFoundException(ticketId));
+
+        ticketRepository.delete(ticket);
+    }
+
     public Ticket getTicketById(Long ticketId) {
         return ticketRepository.getTicketById(ticketId).orElseThrow(() -> new TicketNotFoundException(ticketId));
     }

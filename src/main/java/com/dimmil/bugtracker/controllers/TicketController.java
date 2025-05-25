@@ -58,6 +58,12 @@ public class TicketController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{projectId}/{ticketId}")
+    public ResponseEntity<?> deleteTicker(@AuthenticationPrincipal User user,@PathVariable UUID projectId ,@PathVariable Long ticketId ) {
+        ticketService.deleteTicket(user,projectId,ticketId);
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{projectId}/{ticketId}")
     public ResponseEntity<?> updateTicket(@AuthenticationPrincipal User user,
                                           @RequestBody UpdateTicketRequest updateTicketRequest,
