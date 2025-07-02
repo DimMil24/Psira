@@ -55,7 +55,7 @@ git clone https://github.com/DimMil24/Psira.git
 cd Psira
 ```
 
-On first startup the database is going to populate itself with some demo data. If you don't want this comment out line 18 in this [file](backend\src\main\java\com\dimmil\bugtracker\config\StartupRunner.java) before proceeding.
+On first startup the database is going to populate itself with some demo data. If you don't want this, comment out line 18 in this [file](backend\src\main\java\com\dimmil\bugtracker\config\StartupRunner.java) before proceeding.
 
 You can run the app locally or with docker.
 
