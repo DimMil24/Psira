@@ -38,40 +38,40 @@ public class LoadData {
             var user1 = User.builder()
                     .email("admin")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Dimitris")
-                    .lastName("Milios")
+                    .firstName("Admin")
+                    .lastName("Demo")
                     .role(RoleEnum.ROLE_ADMIN)
                     .build();
 
             var user2 = User.builder()
                     .email("submitter")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Tassos")
-                    .lastName("Anastasiou")
+                    .firstName("Submitter")
+                    .lastName("Demo")
                     .role(RoleEnum.ROLE_SUBMITTER)
                     .build();
 
             var user3 = User.builder()
                     .email("developer")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Eleni")
-                    .lastName("Antoniou")
+                    .firstName("Developer")
+                    .lastName("Demo")
                     .role(RoleEnum.ROLE_DEVELOPER)
                     .build();
 
             var user4 = User.builder()
                     .email("developer2")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Nikolas")
-                    .lastName("Nikolaou")
+                    .firstName("Developer2")
+                    .lastName("Demo")
                     .role(RoleEnum.ROLE_DEVELOPER)
                     .build();
 
             var user5 = User.builder()
                     .email("manager")
                     .password(passwordEncoder.encode("123"))
-                    .firstName("Stavrianna")
-                    .lastName("Kostakou")
+                    .firstName("Manager")
+                    .lastName("Demo")
                     .role(RoleEnum.ROLE_MANAGER)
                     .build();
 

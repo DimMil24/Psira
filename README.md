@@ -46,6 +46,53 @@ Any change made to a ticket, is tracked and shown in the history of the ticket.
 
 ![Ticket Details Preview](assets/ticketDetails.gif)
 
-### Diagram
+## How to run
+
+First clone the repository.
+
+```
+git clone https://github.com/DimMil24/Psira.git
+cd Psira
+```
+
+On first startup the database is going to populate itself with some demo data. If you don't want this comment out line 18 in this [file](backend\src\main\java\com\dimmil\bugtracker\config\StartupRunner.java) before proceeding.
+
+You can run the app locally or with docker.
+
+### Local
+
+#### Backend
+
+You need to run the database first, then the app.
+
+```
+cd backend
+docker compose up
+./mvnw spring-boot:run
+```
+
+#### Frontend
+
+```
+cd frontend
+npm install
+npm run dev
+```
+
+### Docker
+
+To run the app with docker, you need to first build the jar, and then run docker compose:
+
+```
+cd backend
+./mvnw clean package -DskipTests
+cd ..
+docker compose up --build
+```
+
+The app will be available on localhost:3000.<br>
+If you didn't disable the demo data, for the username you can use any of the roles (admin, manager, developer, submitter) and for the password 123.
+
+## Diagram
 
 ![Ticket Details Preview](assets/diagram.png)
