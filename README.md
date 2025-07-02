@@ -63,11 +63,16 @@ You can run the app locally or with docker.
 
 #### Backend
 
-You need to run the database first, then the app.
+You need to run the database first. (If you have postgres installed, you can skip this step, just modify the application.properties file accordingly).
 
 ```
 cd backend
 docker compose up
+```
+
+Now run the app.
+
+```
 ./mvnw spring-boot:run
 ```
 
@@ -81,12 +86,9 @@ npm run dev
 
 ### Docker
 
-To run the app with docker, you need to first build the jar, and then run docker compose:
+From the root directory.
 
 ```
-cd backend
-./mvnw clean package -DskipTests
-cd ..
 docker compose up --build
 ```
 
