@@ -1,14 +1,13 @@
 # Psira
+
 A bug tracker application written in Java 21 with Spring Boot for the backend, Postgresql for the database
-and React for the Frontend.
-<br>
-This repository contains the backend of the app. For the frontend click [here](https://github.com/DimMil24/Psira-frontend)
-<br>
+and React with Vite for the Frontend.
 <br>
 
 ![Dashboard Preview](assets/dashboard2.gif)
 
-##  Features
+## Features
+
 - JWT Authentication
 - Role-Based Authorization
 - Project Management
@@ -16,6 +15,7 @@ This repository contains the backend of the app. For the frontend click [here](h
 - Exception Handling
 
 ## Overview
+
 There are 4 roles. **Admin** , **Project Manager**, **Developer** and **Submitter**.
 <br>
 Managers create and manage projects. Developers are assigned to tickets for resolving.
@@ -24,6 +24,7 @@ Submitters submit tickets for each project. Admins can manage everything.
 Each user (except for the admins) can only see the projects and the tickets that he has been assigned to.
 
 ### Projects
+
 A project has a number of tickets that are being used to track its progress.
 There is also a deadline and a priority.
 
@@ -34,6 +35,7 @@ There is also a deadline and a priority.
 ![Create Project Preview](assets/CreateProject.png)
 
 ### Tickets
+
 A ticket has a status which indicates the progress of the ticket, a priority and a type (Bug fix, new feature etc.).
 <br>
 Users can communicate and add comments to each ticket.
